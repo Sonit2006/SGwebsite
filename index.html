@@ -1,18 +1,25 @@
 <html>
-    <head>
-        <title> Student Genius</title>
-    </head>
-    <body bgcolor="#f0c6ff">
-        <h1 align = "center">Student Genius</h1>
-        <div id="center2"></div>
-        <div id= "buttons">
-            <form>
-                <input type="button" align="center" id="student" onclick="navigate()" value="Student"><br><br><br>
-                <input type="button" align="center" id="teacher" value="Teacher">
-            </form>
+
+<head>
+    <title> Student Genius</title>
+    <link rel="stylesheet"  href="styles.css" type="text/css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="banner">
+            <h1 align="center">Student Genius</h1>
+        </div>
+        <div id="main-content">
+            <div id="menu">
+                <li><input type="button" align="center" id="student" onclick="navigate()" value="Student"></li>
+                <li><input type="button" align="center" id="teacher" value="Teacher"></li>
+            </div>
         </div>
 
-        <script src="redirect.js"></script>
-      
-    </body>
+    </div>
+    <script src="redirect.js"></script>
+
+</body>
+
 </html>

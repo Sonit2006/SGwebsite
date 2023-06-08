@@ -1,0 +1,159 @@
+
+/*    PHONE STYLES ========================================*/
+@media only screen and (max-width: 480px) {
+    * {
+        margin: 0px;
+        padding: 0px;
+     }
+        
+ #wrapper {
+        width: 360px;
+        font-family: 'Raleway';
+        }
+  #banner
+   { 
+      height: 40px;
+      background-color: skyblue;
+   }
+
+ #banner h1{
+    font-size:1em;
+ }
+
+ #menu {
+    font-family:'hind' ,sans-serif ;
+    background-color: #000;
+    width: 360px;
+    float:right;
+    margin:0px 0px 10px 10px;
+    padding:15px 5px 20px 5px;
+    }
+    
+#menu ul {
+    text-align: center;
+    background-color: #000000;
+    }
+    
+#menu li {
+    margin: 20px 0px 40px 0px;
+    }
+    
+#menu a {
+    border: solid;
+    border-width: 1px;
+    padding: 0px 20px 0px 20px;
+    text-decoration: none;
+    color: #000000;
+    font-family: 'Hind',sans-serif;
+    background-color: #ffffff;
+    }
+    
+#menu a:hover {
+    color: #ffffff;
+    background-color: #666666;
+    }
+
+#footer{
+
+       color:#000000;
+        background-color: skyblue;
+        height: 20px;
+        clear: both;
+      }
+
+
+}  /*END PHONE STYLES ========================================*/
+
+
+
+
+
+
+/*    DESKTOP STYLES ========================================*/
+@media only screen and (min-width: 769px) 
+{
+* {
+margin: 0px;
+padding: 0px;
+}
+
+#wrapper {
+width: 100%;
+border:snow;
+margin-right: auto;
+margin-left: auto;
+font-family: 'Raleway';
+}
+
+#banner { 
+height: 98px;
+background-color:skyblue;
+}
+#banner h1{
+    
+    padding-top: 20px;
+    font-family:'Raleway';
+    text-align: center;
+    font-size: 3em;
+    color: #000000;
+}
+}
+
+#menu {
+font-family: Arial, Helvetica, sans-serif;
+position:relative;
+margin-right: 30%;
+margin-left: 30%;
+
+}
+
+
+#menu li {
+padding: 10px 10px 10px 10px;
+display: block;
+margin-right: 20px;
+font-size: 1.5em;
+font-family:'Hind';
+font-style: italic;
+}
+
+#menu input {
+
+text-decoration: #ffff;
+color: chocolate;
+font-family: 'Hind';
+width: 100px;
+margin-left: 150px;
+padding-top: 10px;
+
+
+}
+
+#menu input:hover {
+color: #ffffff;
+background-color: black;
+}
+#main-content{
+    max-width: 100%;
+    max-height: 1200px;
+    background-image:url("C:\Users\maddi\OneDrive\Documents\GitHub\SGwebsite\background.jpg");
+    background-repeat: no-repeat;
+
+}
+
+
+#content{
+  position:relative;
+    font-size: 1.5em;
+    font-family: 'Times New Roman', 'Times', 'serif';
+    padding:10px 10px 10px 10px;
+ }
+ 
+/*#footer
+{   color:#000000;
+    background-color: skyblue;
+    height: 50px;
+   clear: both;
+}*/
+  /*END DESKTOP STYLES ========================================*/
+
