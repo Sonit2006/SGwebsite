@@ -7,17 +7,12 @@
         <div id="center2"></div>
         <div id= "buttons">
             <form>
-                <button align="center" id="student">Student</button><br><br><br>
-                <button align="center" id="teacher">Teacher</button>
+                <input type="button" align="center" id="student" onclick="navigate()" value="Student"><br><br><br>
+                <input type="button" align="center" id="teacher" value="Teacher">
             </form>
         </div>
 
-        <script>
-                function navigate(){
-                    window.location.href = "login.html";
-                }
-                document.getElementById("student").onclick=navigate;
-        </script>
+        <script src="redirect.js"></script>
       
     </body>
 </html>
