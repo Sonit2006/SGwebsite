@@ -3,6 +3,29 @@
 <head>
     <title> Student Genius</title>
     <link rel="stylesheet"  href="styles.css" type="text/css">
+    <style>
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f9f9f9;
+          box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+          max-height: 200px;
+          overflow-y: auto;
+        }
+    
+        .dropdown-content button {
+          display: block;
+          width: 100%;
+          padding: 8px 12px;
+          border: none;
+          background-color: transparent;
+          text-align: left;
+        }
+    
+        .dropdown-content button:hover {
+          background-color: #e9e9e9;
+        }
+      </style>
 </head>
 
 <body>
@@ -20,8 +43,11 @@
                 </div>
                 <div class="right">
                     <div id="box1">
-                        <input type="search" id="searchInput" name="searchInput" placeholder="Search..." />
+                        <form>
+                        <input type="search" id="searchInput" name="searchInput" placeholder="Search..." oninput="filterDropdownOptions()">
+                        <div id="dropdown" class="dropdown-content"></div>
                         <input type="submit" value="Search" />
+                    </form>
                     </div>
                 </div>
             </div>
@@ -29,7 +55,6 @@
         </div>
         <div id="footer"></div>
     </div>
-    <script src="redirect.js"></script>
     <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
   <script>
     window.botpressWebChat.init({
@@ -39,6 +64,52 @@
         "clientId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
         "showPoweredBy": true
     });
+  </script>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const dropdown = document.getElementById('dropdown');
+
+    var suggestions;
+
+    fetch('http://localhost:3000/data')
+            .then(response => response.json())
+            .then(data => {
+                suggestions = data.map(row => row.Name);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
+
+    function filterDropdownOptions() {
+      const filterValue = searchInput.value.toLowerCase();
+      dropdown.innerHTML = '';
+
+      // Filter and display matching suggestions
+      const matchingSuggestions = suggestions.filter(suggestion =>
+        suggestion.toLowerCase().includes(filterValue)
+      );
+
+      matchingSuggestions.forEach(suggestion => {
+        const suggestionElement = document.createElement('button');
+        suggestionElement.type = 'button';
+        suggestionElement.textContent = suggestion;
+        suggestionElement.onclick = () => selectSuggestion(suggestion);
+
+        dropdown.appendChild(suggestionElement);
+      });
+
+      if (matchingSuggestions.length > 0) {
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
+
+    function selectSuggestion(selectedSuggestion) {
+      searchInput.value = selectedSuggestion;
+      dropdown.style.display = 'none';
+    }
   </script>
 </body>
 
