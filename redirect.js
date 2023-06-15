@@ -1,3 +1,3 @@
 function navigate(){
-    window.location = "login.html";
+    window.location = "createAccount.html";
 }

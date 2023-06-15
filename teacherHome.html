@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <title> Student Genius</title>
+    <link rel="stylesheet"  href="styles.css" type="text/css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="banner">
+            <h1 align="center">Student Genius</h1>
+        </div>
+        <div id="main-content">
+            <div id="updateBtn" align="right">
+                <input type="button" align="center" id="update" onclick="navigate()" value="Update"></div>
+            <div id="menu">
+                <div class="left">
+                    <li><input type="button" align="center" id="report" onclick="navigate()" value="Generate report"></li>
+                    <li><input type="button" align="center" id="winners" value="Show Winners"></li>
+                </div>
+                <div class="right">
+                    <div id="box1">
+                        <input type="search" id="searchInput" name="searchInput" placeholder="Search..." />
+                        <input type="submit" value="Search" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script src="redirect.js"></script>
+    <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
+  <script>
+    window.botpressWebChat.init({
+        "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+        "hostUrl": "https://cdn.botpress.cloud/webchat/v0",
+        "messagingUrl": "https://messaging.botpress.cloud",
+        "clientId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+        "showPoweredBy": true
+    });
+  </script>
+</body>
+
+</html>
