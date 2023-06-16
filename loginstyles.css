@@ -113,4 +113,119 @@
     }
 }
 
+/*    DESKTOP STYLES ========================================*/
+@media only screen and (min-width: 769px) {
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #wrapper {
+        width: 100%;
+        border: snow;
+        margin-right: auto;
+        margin-left: auto;
+        font-family: 'Raleway';
+        background-image: url("background.jpg");
+    }
+
+    #banner {
+        height: 98px;
+        background-color: darkblue;
+    }
+
+    #banner h1 {
+        padding-top: 20px;
+        font-family: 'Raleway';
+        text-align: center;
+        font-size: 3em;
+        color: white;
+        position: relative;
+    }
+
+    #banner img {
+        height: 98px;
+        width: 200px;
+        float: left;
+        position: absolute;
+    }
+
+    #main-content {
+        padding-top: 20px;
+        max-width: 100%;
+        max-height: 1200px;
+        background-image: url("background.jpg");
+        position: relative;
+    }
+
+    #box {
+        margin-top: 30px;
+        padding-top: 20px;
+        width: 400px;
+        height: 400px;
+        background-color: #d3d3d3;
+        padding-left: 40px;
+        margin-left: 35%;
+        border: 2px solid black;
+        border-radius: 25px;
+        position: relative;
+    }
+
+    #center2 h2 {
+        padding-top: 5px;
+        padding-left: 120px;
+        color: black;
+        font-family: 'Hind';
+        font-size: 3em;
+        font-weight: bold;
+     
+
+
+    }
+
+    #menu {
+        font-family: Arial, Helvetica, sans-serif;
+        position: relative;
+        padding-left: 20px;
+
+    }
+ 
+    #menu input {
+        margin-top: 30px;
+        margin-left: 25px;
+        font-family: 'Hind';
+        font-size: 1.5em;
+        font-weight: bold;
+        width: 250px;
+        height: 40px;
+        text-align: center;
+        background-color: darkblue;
+        color: gold;
+       
+
+    }
+
+    #menu input:hover {
+        color: #ffffff;
+        background-color: black;
+    }
+
+    #menu button{
+        margin-left: 40%;
+        margin-top: 40px;
+        width: 90px;
+        height: 40px;
+        border-radius: 20px;
+        background-color: rgb(97, 39, 3);
+        color: gold;
+        font-size: 1em;
+    }
+
+    #footer {
+        background-image: url("background.jpg");
+        height: 340px;
+        clear: both;
+    }
+}
+
 /*END DESKTOP STYLES ========================================*/
