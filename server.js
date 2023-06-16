@@ -25,9 +25,8 @@ app.get('/data', (req, res) => {
       console.error('Error getting connection from pool:', err);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    // Execute a MySQL query
-    connection.query('SELECT Name FROM nchs.track', (err, results) => {
+   // Execute a MySQL query
+    connection.query('SELECT * FROM nchs.track', (err, results) => {
       connection.release(); // Release the connection back to the pool
 
       if (err) {
@@ -39,6 +38,26 @@ app.get('/data', (req, res) => {
       res.json(results);
     });
   });
+});
+
+app.get('/getOtherColumns', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting connection from pool:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  const value = req.query.value;
+
+  // Query the database to select other columns of the same row
+  const query = `SELECT ID, Name, Grade, Points FROM nchs.track WHERE Name = ?`;
+  connection.query(query, [value], (error, results) => {
+    if (error) {
+      console.error('Error executing the query:', error);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.json(results);
+  });});
 });
 
 // Start the server
