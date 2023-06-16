@@ -1,13 +1,31 @@
 <html>
-    <body>
-        <div class="container" align="center">
-          <h1 align = "center">Student Genius</h1>
-          <div id="center2"></div>
+
+<head>
+  <title> Login Page</title>
+  <link rel="stylesheet" href="loginstyles.css" type="text/css">
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="banner">
+      <img src="logo.png">
+      <h1 align="center">Student Genius</h1>
+    </div>
+    <div id="main-content">
+      <div id="box">
+        <div id="center2">
           <h2>Login</h2>
+        </div>
+        <div id="menu">
           <input type="text" id="username" placeholder="Username"><br><br>
           <input type="password" id="password" placeholder="Password"><br><br>
           <button onclick="fetchSchoolData()">Login</button>
         </div>
-        <script src="login.js"></script>
-    </body>
+      </div>
+    </div>
+    <div id="footer"></div>
+  </div>
+  <script src="login.js"></script>
+</body>
+
 </html>

@@ -13,12 +13,21 @@
   #banner
    { 
       height: 40px;
-      background-color: skyblue;
+      background-color: darkblue;
    }
 
  #banner h1{
     font-size:1em;
+  
  }
+ #main-content{
+    padding-top:20px;
+    max-width: 100%;
+    max-height: 1200px;
+    background-image:url("background.jpg");
+    position: relative;
+}
+
 
  #menu {
     font-family:'hind' ,sans-serif ;
@@ -28,31 +37,30 @@
     margin:0px 0px 10px 10px;
     padding:15px 5px 20px 5px;
     }
+ #menu input {
+
+text-decoration: #ffff;
+color: gold;
+font-family: 'Hind';
+font-size: 1em;
+font-weight: bold;
+width: 300px;
+margin-left: 150px;
+padding: 10px;
+background-color: darkblue;/*rgba(6, 6, 122, 0.629);*/
+
+}
+
+#menu input:hover {
+color: #ffffff;
+background-color: black;
+}
     
-#menu ul {
-    text-align: center;
-    background-color: #000000;
-    }
-    
+   
 #menu li {
     margin: 20px 0px 40px 0px;
     }
-    
-#menu a {
-    border: solid;
-    border-width: 1px;
-    padding: 0px 20px 0px 20px;
-    text-decoration: none;
-    color: #000000;
-    font-family: 'Hind',sans-serif;
-    background-color: #ffffff;
-    }
-    
-#menu a:hover {
-    color: #ffffff;
-    background-color: #666666;
-    }
-
+   
 #footer{
 
        color:#000000;
@@ -87,7 +95,7 @@ background-image:url("background.jpg");
 }
 #banner { 
 height: 98px;
-background-color:blue;
+background-color:darkblue;
 }
 #banner h1{
     padding-top: 20px;
@@ -96,6 +104,12 @@ background-color:blue;
     font-size: 3em;
     color: white;
     position:relative;
+}
+#banner img{
+    height: 98px;
+    width:200px;
+    float:left;
+    position: absolute;
 }
 #main-content{
     padding-top:20px;
@@ -134,7 +148,7 @@ font-weight: bold;
 width: 300px;
 margin-left: 150px;
 padding: 10px;
-background-color: blue;
+background-color: darkblue;/*rgba(6, 6, 122, 0.629);*/
 
 }
 
