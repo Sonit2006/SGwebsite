@@ -90,10 +90,10 @@
 
     }
 
-    #menu input:hover {
+    /* #menu input:hover {
         color: #ffffff;
         background-color: black;
-    }
+    } */
 
     #menu button{
         margin-left: 40%;
@@ -205,7 +205,7 @@
 
     }
 
-    #menu input:hover {
+    #menu button:hover {
         color: #ffffff;
         background-color: black;
     }
