@@ -2,30 +2,30 @@
 
 <head>
     <title> Student Genius</title>
-    <link rel="stylesheet"  href="styles.css" type="text/css">
+    <link rel="stylesheet" href="styles.css" type="text/css">
     <style>
         .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #f9f9f9;
-          box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-          max-height: 200px;
-          overflow-y: auto;
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+            max-height: 200px;
+            overflow-y: auto;
         }
-    
+
         .dropdown-content button {
-          display: block;
-          width: 100%;
-          padding: 8px 12px;
-          border: none;
-          background-color: transparent;
-          text-align: left;
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            background-color: transparent;
+            text-align: left;
         }
-    
+
         .dropdown-content button:hover {
-          background-color: #e9e9e9;
+            background-color: #e9e9e9;
         }
-      </style>
+    </style>
 </head>
 
 <body>
@@ -35,19 +35,23 @@
         </div>
         <div id="main-content">
             <div id="updateBtn" align="right">
-                <input type="button" align="center" id="update" onclick="navigate()" value="Update"></div>
+                <input type="button" align="center" id="update" onclick="navigate()" value="Update">
+            </div>
             <div id="menu">
                 <div class="left">
-                    <li><input type="button" align="center" id="report" onclick="navigate()" value="Generate report"></li>
+                    <li><input type="button" align="center" id="report" onclick="navigate()" value="Generate report">
+                    </li>
                     <li><input type="button" align="center" id="winners" value="Show Winners"></li>
                 </div>
                 <div class="right">
                     <div id="box1">
                         <form>
-                        <input type="search" id="searchInput" name="searchInput" placeholder="Search..." oninput="filterDropdownOptions()">
-                        <div id="dropdown" class="dropdown-content"></div>
-                        <input type="submit" value="Search" />
-                    </form>
+                            <input type="search" id="searchInput" name="searchInput" placeholder="Search..."
+                                oninput="filterDropdownOptions()">
+                            <div id="dropdown" class="dropdown-content"></div>
+                            <input type="submit" value="Search" />
+                            <div id="result" align="center"></div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -56,22 +60,22 @@
         <div id="footer"></div>
     </div>
     <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
-  <script>
-    window.botpressWebChat.init({
-        "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
-        "hostUrl": "https://cdn.botpress.cloud/webchat/v0",
-        "messagingUrl": "https://messaging.botpress.cloud",
-        "clientId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
-        "showPoweredBy": true
-    });
-  </script>
-  <script>
-    const searchInput = document.getElementById('searchInput');
-    const dropdown = document.getElementById('dropdown');
+    <script>
+        window.botpressWebChat.init({
+            "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+            "hostUrl": "https://cdn.botpress.cloud/webchat/v0",
+            "messagingUrl": "https://messaging.botpress.cloud",
+            "clientId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+            "showPoweredBy": true
+        });
+    </script>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const dropdown = document.getElementById('dropdown');
 
-    var suggestions;
+        var suggestions;
 
-    fetch('http://localhost:3000/data')
+        fetch('http://localhost:3000/data')
             .then(response => response.json())
             .then(data => {
                 suggestions = data.map(row => row.Name);
@@ -81,36 +85,60 @@
                 console.error(error);
             });
 
-    function filterDropdownOptions() {
-      const filterValue = searchInput.value.toLowerCase();
-      dropdown.innerHTML = '';
+        function filterDropdownOptions() {
+            const filterValue = searchInput.value.toLowerCase();
+            dropdown.innerHTML = '';
 
-      // Filter and display matching suggestions
-      const matchingSuggestions = suggestions.filter(suggestion =>
-        suggestion.toLowerCase().includes(filterValue)
-      );
+            // Filter and display matching suggestions
+            const matchingSuggestions = suggestions.filter(suggestion =>
+                suggestion.toLowerCase().includes(filterValue)
+            );
 
-      matchingSuggestions.forEach(suggestion => {
-        const suggestionElement = document.createElement('button');
-        suggestionElement.type = 'button';
-        suggestionElement.textContent = suggestion;
-        suggestionElement.onclick = () => selectSuggestion(suggestion);
+            matchingSuggestions.forEach(suggestion => {
+                const suggestionElement = document.createElement('button');
+                suggestionElement.type = 'button';
+                suggestionElement.textContent = suggestion;
+                suggestionElement.onclick = () => selectSuggestion(suggestion);
 
-        dropdown.appendChild(suggestionElement);
-      });
+                dropdown.appendChild(suggestionElement);
+            });
 
-      if (matchingSuggestions.length > 0) {
-        dropdown.style.display = 'block';
-      } else {
-        dropdown.style.display = 'none';
-      }
-    }
+            if (matchingSuggestions.length > 0) {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
 
-    function selectSuggestion(selectedSuggestion) {
-      searchInput.value = selectedSuggestion;
-      dropdown.style.display = 'none';
-    }
-  </script>
+        function selectSuggestion(selectedSuggestion) {
+            const display = document.getElementById("result");
+            display.innerHTML = "";
+            //fetch data and set searchinput.value to row.ID
+            fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(selectedSuggestion))
+                .then(response => response.json())
+                .then(data => {
+                    const idHeader = document.createElement('h3');
+                    const nameHeader = document.createElement('h3');
+                    const gradeHeader = document.createElement('h3');
+                    const pointHeader = document.createElement('h3');
+                    // Process the data returned from the server
+                    idHeader.textContent = "ID:  " + data[0].ID;
+                    nameHeader.textContent = "Name:  " + data[0].Name;
+                    gradeHeader.textContent = "Grade:  " + data[0].Grade;
+                    pointHeader.textContent = "Points:  " + data[0].Points;
+                    display.appendChild(idHeader);
+                    display.appendChild(nameHeader);
+                    display.appendChild(gradeHeader);
+                    display.appendChild(pointHeader);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            searchInput.value = selectedSuggestion;
+            dropdown.style.display = 'none';
+
+        }
+    </script>
 </body>
 
 </html>
