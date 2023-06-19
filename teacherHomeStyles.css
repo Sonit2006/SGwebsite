@@ -52,7 +52,11 @@
     #updateBtn input{
       
         font-size: 1em;
+        font-weight: bold;
         background-color:azure;
+        border: solid;
+        border-color: brown;
+        border-radius: 10px;
         width:200px;
         height:50px;
         float:right;
