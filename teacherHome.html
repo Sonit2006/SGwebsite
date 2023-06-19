@@ -2,16 +2,16 @@
 
 <head>
     <title> Student Genius</title>
-    <link rel="stylesheet" href="teacherHomeStyles.css" type="text/css">
+   <link href="teacherHomeStyles.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div id="wrapper">
         <div id="banner">
-            <h1 align="center">Student Genius</h1>
+            <img src="logo.png"> <h1 align="center">Student Genius</h1>
         </div>
         <div id="main-content">
-            <div id="updateBtn" align="right">
+            <div id="updateBtn">
                 <input type="button" align="center" id="update" onclick="navigate()" value="Update">
             </div>
             <div id="menu">
@@ -26,7 +26,7 @@
                             <input type="search" id="searchInput" name="searchInput" placeholder="Search..."
                                 oninput="filterDropdownOptions()">
                             <div id="dropdown" class="dropdown-content"></div>
-                            <input type="submit" value="Search" />
+                            <div id="submit"><input type="submit" value="Search" /></div>
                             <div id="result" align="center"></div>
                         </form>
                     </div>
