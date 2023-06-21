@@ -2,7 +2,7 @@
 
 <head>
     <title> Student Genius</title>
-    <link rel="stylesheet" href="styles.css" type="text/css">
+    <link rel="stylesheet" href="winnerStyles.css" type="text/css">
 </head>
 
 <body>
@@ -13,32 +13,44 @@
         </div>
         <div id="main-content">
             <div id="menu">
-                <table border="solid">
-                    <tr bgcolor="red">
-                        <th>Title</th>
-                        <th>Name</th>
-                        <th>Grade</th>
-                        <th>Points</th>
-                        <th>Prizes</th>
-                    </tr>
-                    <tr id="topPoints"></tr>
-                    <tr id="grade9"></tr>
-                    <tr id="grade10"></tr>
-                    <tr id="grade11"></tr>
-                    <tr id="grade12"></tr>
-                </table>
-
-                <table border="solid">
-                    <tr bgcolor="red">
-                        <th>Title</th>
-                        <th>Name</th>
-                        <th>ID</th>
-                    </tr>
-                    <tr id="randWin9"></tr>
-                    <tr id="randWin10"></tr>
-                    <tr id="randWin11"></tr>
-                    <tr id="randWin12"></tr>
-                </table>
+                <h1> Winners </h1>
+                <div class="leftMenu">
+                    
+                    <div id="box1">
+                        <h3> Winners per this Quarter</h3>
+                        <table id="headings">
+                            <tr>
+                                <th>Title</th>
+                                <th>Name</th>
+                                <th>Grade</th>
+                                <th>Points</th>
+                                <th>Prizes</th>
+                            </tr>
+                            <tr id="topPoints"></tr>
+                            <tr id="grade9"></tr>
+                            <tr id="grade10"></tr>
+                            <tr id="grade11"></tr>
+                            <tr id="grade12"></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="rightMenu">
+                    
+                    <div id="box2">
+                        <h3> Random Winners</h3>
+                        <table id="randomHeadings">
+                            <tr >
+                                <th>Title</th>
+                                <th>Name</th>
+                                <th>ID</th>
+                            </tr>
+                            <tr id="randWin9"></tr>
+                            <tr id="randWin10"></tr>
+                            <tr id="randWin11"></tr>
+                            <tr id="randWin12"></tr>
+                        </table>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -79,7 +91,7 @@
                     }
                 });
 
-                fetch('http://localhost:3000/getRandWins')
+            fetch('http://localhost:3000/getRandWins')
                 .then(response => response.json())
                 .then(data => {
                     for (let i = 0; i < titles.length - 1; i++) {
@@ -95,7 +107,7 @@
                     }
                 });
 
-           
+
         }
     </script>
 
