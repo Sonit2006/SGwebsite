@@ -1,0 +1,104 @@
+<html>
+
+<head>
+    <title> Student Genius</title>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="banner">
+            <img src="logo.png">
+            <h1 align="center">Student Genius</h1>
+        </div>
+        <div id="main-content">
+            <div id="menu">
+                <table border="solid">
+                    <tr bgcolor="red">
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>Grade</th>
+                        <th>Points</th>
+                        <th>Prizes</th>
+                    </tr>
+                    <tr id="topPoints"></tr>
+                    <tr id="grade9"></tr>
+                    <tr id="grade10"></tr>
+                    <tr id="grade11"></tr>
+                    <tr id="grade12"></tr>
+                </table>
+
+                <table border="solid">
+                    <tr bgcolor="red">
+                        <th>Title</th>
+                        <th>Name</th>
+                        <th>ID</th>
+                    </tr>
+                    <tr id="randWin9"></tr>
+                    <tr id="randWin10"></tr>
+                    <tr id="randWin11"></tr>
+                    <tr id="randWin12"></tr>
+                </table>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script>
+        window.onload = function () {
+            displayWinners();
+        }
+        const titles = ["Top point Accumulation", "Grade 9 winner", "Grade 10 winner", "Grade 11 winner", "Grade 12 winner"];
+        const rows = [document.getElementById("topPoints"), document.getElementById("grade9"), document.getElementById("grade10"), document.getElementById("grade11"), document.getElementById("grade12")];
+        const randWinRows = [document.getElementById("randWin9"), document.getElementById("randWin10"), document.getElementById("randWin11"), document.getElementById("randWin12")];
+        var prizes;
+        var rand;
+        function displayWinners() {
+            fetch('http://localhost:3000/getPrizes')
+                .then(response => response.json())
+                .then(data => {
+                    prizes = data.map(row => row.Name);
+                    prizes = prizes.slice(4, 9);
+                })
+            fetch('http://localhost:3000/getWinners')
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < titles.length; i++) {
+                        console.log(data[i][0]);
+                        const title = document.createElement("th");
+                        const name = document.createElement("td");
+                        const grade = document.createElement("td");
+                        const points = document.createElement("td");
+                        const prize = document.createElement("td");
+                        title.textContent = titles[i];
+                        name.textContent = data[i][0].Name;
+                        grade.textContent = data[i][0].Grade;
+                        points.textContent = data[i][0].winners;
+                        prize.textContent = prizes[i].slice(1, prizes[i].length);
+                        rows[i].appendChild(title); rows[i].appendChild(name); rows[i].appendChild(grade); rows[i].appendChild(points); rows[i].appendChild(prize);
+                    }
+                });
+
+                fetch('http://localhost:3000/getRandWins')
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < titles.length - 1; i++) {
+                        const title = document.createElement("th");
+                        const name = document.createElement("td");
+                        const id = document.createElement("td");
+                        // const points = document.createElement("td");
+                        // const prize = document.createElement("td");
+                        title.textContent = titles[i + 1];
+                        name.textContent = data[i][0].Name;
+                        id.textContent = data[i][0].ID;
+                        randWinRows[i].appendChild(title); randWinRows[i].appendChild(name); randWinRows[i].appendChild(id);
+                    }
+                });
+
+           
+        }
+    </script>
+
+</body>
+
+</html>

@@ -12,14 +12,21 @@
         </div>
         <div id="main-content">
             <div id="menu">
-                <li><input type="button" align="center" id="student" onclick="navigate()" value="Student"></li>
-                <li><input type="button" align="center" id="teacher" onclick="navigate()" value="Teacher"></li>
+                <li><input type="button" align="center" id="student" onclick="navigateStudent()" value="Student"></li>
+                <li><input type="button" align="center" id="teacher" onclick="navigateTeacher()" value="Teacher"></li>
             </div>
 
         </div>
         <div id="footer"></div>
     </div>
-    <script src="redirect.js"></script> 
+    <script>
+        function navigateStudent(){
+            window.location = "studentLogin.html";
+        }
+        function navigateTeacher(){
+            window.location = "teacherLogin.html";
+        }
+    </script> 
 
 </body>
 

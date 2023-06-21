@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title> Student Genius</title>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="banner">
+            <img src="logo.png">
+            <h1 align="center">Student Genius</h1>
+        </div>
+        <div id="main-content">
+            <div id="menu">
+                <div id="idSelect">
+                    <label>Enter the Student ID:</label><br>
+                    <datalist id="suggestions">
+                    </datalist>
+                    <input  autoComplete="on" list="suggestions"/> 
+                </div>
+                <div id="activitySelect">
+                    <label>Enter the Student ID:</label><br>
+                </div>
+                <div id="dateSelect">
+                    <label>Enter the Student ID:</label><br>
+                </div>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script>
+        fetch('http://localhost:3000/data')
+            .then(response => response.json())
+            .then(data => {data.map(row => {
+                    const option = document.createElement("option");
+                    option.textContent = row.ID
+                    document.getElementById("suggestions").appendChild(option);
+                });
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
+        
+    </script>
+
+</body>
+
+</html>

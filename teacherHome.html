@@ -2,13 +2,14 @@
 
 <head>
     <title> Student Genius</title>
-   <link href="teacherHomeStyles.css" rel="stylesheet" type="text/css">
+    <link href="teacherHomeStyles.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div id="wrapper">
         <div id="banner">
-            <img src="logo.png"> <h1 align="center">Student Genius</h1>
+            <button id="home" onclick="redirect()"><img src="logo.png"></button>
+            <h1 align="center">Student Genius</h1>
         </div>
         <div id="main-content">
             <div id="updateBtn">
@@ -16,20 +17,25 @@
             </div>
             <div id="menu">
                 <div class="left">
-                    <li><input type="button" align="center" id="report" onclick="navigate()" value="Generate report">
+                    <li><input type="button" align="center" id="report" onclick="downloadFile()"
+                            value="Generate report">
                     </li>
-                    <li><input type="button" align="center" id="winners" value="Show Winners"></li>
+                    <a id="downloadLink" style="display: none;"></a>
+                    <li><input type="button" align="center" id="winners" value="Show Winners" onclick="showWinners()"></li>
                 </div>
                 <div class="right">
                     <div id="box1">
-                        <form>
+                        <h3>Search for Student Information</h3>
+                        <form autocomplete="off">
                             <input type="search" id="searchInput" name="searchInput" placeholder="Search..."
                                 oninput="filterDropdownOptions()">
-                            <div id="dropdown" class="dropdown-content"></div>
-                            <div id="submit"><input type="submit" value="Search" /></div>
-                            <div id="result" align="center"></div>
-                        </form>
+                            <div id="submit"><input type="button" onclick="displayResult()" value="Search" /></div>
+                            <div id="result" align="left"></div><br><br><br><br>
+                            <div id="dropdown" class="dropdown-content" align="center"></div>
+                            
+                        </form>   
                     </div>
+                    
                 </div>
             </div>
 
@@ -65,6 +71,8 @@
         function filterDropdownOptions() {
             const filterValue = searchInput.value.toLowerCase();
             dropdown.innerHTML = '';
+            document.getElementById("result").innerHTML = '';
+
 
             // Filter and display matching suggestions
             const matchingSuggestions = suggestions.filter(suggestion =>
@@ -88,34 +96,70 @@
         }
 
         function selectSuggestion(selectedSuggestion) {
+            searchInput.value = selectedSuggestion;
+            dropdown.style.display = 'none';
+        }
+
+        function displayResult() {
             const display = document.getElementById("result");
             display.innerHTML = "";
             //fetch data and set searchinput.value to row.ID
-            fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(selectedSuggestion))
+            fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(searchInput.value))
                 .then(response => response.json())
                 .then(data => {
-                    const idHeader = document.createElement('h3');
-                    const nameHeader = document.createElement('h3');
-                    const gradeHeader = document.createElement('h3');
-                    const pointHeader = document.createElement('h3');
+                    const idHeader = document.createElement('p');
+                    const nameHeader = document.createElement('p');
+                    const gradeHeader = document.createElement('p');
+                    const pointHeader = document.createElement('p');
                     // Process the data returned from the server
                     idHeader.textContent = "ID:  " + data[0].ID;
                     nameHeader.textContent = "Name:  " + data[0].Name;
                     gradeHeader.textContent = "Grade:  " + data[0].Grade;
                     pointHeader.textContent = "Points:  " + data[0].Points;
                     display.appendChild(idHeader);
+                    display.appendChild(document.createElement('br'));
                     display.appendChild(nameHeader);
+                    display.appendChild(document.createElement('br'));
                     display.appendChild(gradeHeader);
+                    display.appendChild(document.createElement('br'));
                     display.appendChild(pointHeader);
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-            searchInput.value = selectedSuggestion;
-            dropdown.style.display = 'none';
-
         }
     </script>
+    <script>
+        function downloadFile() {
+            // window.open("C:/Users/Sonit Maddineni/Documents/ProjectPy/studentGenuis/Report.xlsx")
+            var downloadLink = document.getElementById("downloadLink");
+            downloadLink.href = "C:/Users/Sonit Maddineni/Documents/ProjectPy/studentGenuis/Report.xlsx";
+            downloadLink.download = "Report.xlsx";
+            downloadLink.click();
+        }
+
+        function showWinners(){
+            window.location = "winners.html";
+        }
+    </script>
+    <script>
+        function redirect(){
+        window.location = "index.html";
+    }
+
+    document.addEventListener('click', function(event) {
+      const widget = document.getElementById('searchInput');
+      const clickedElement = event.target;
+
+      // Check if the clicked element is the widget or its descendant
+      if (!widget.contains(clickedElement)) {
+        // The click is outside the widget, trigger your function here
+        dropdown.innerHTML = '';
+      }
+    });
+    </script>
+
+
 </body>
 
 </html>

@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <title> Login Page</title>
+  <link rel="stylesheet" href="loginstyles.css" type="text/css">
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="banner">
+      <img src="logo.png">
+      <h1 align="center">Student Genius</h1>
+    </div>
+    <div id="main-content">
+      <div id="box">
+        <div id="center2">
+          <h2>Login</h2>
+        </div>
+        <div id="menu">
+          <input type="text" id="username" placeholder="Username"><br><br>
+          <input type="password" id="password" placeholder="Password"><br><br>
+          <button onclick="verify()">Login</button>
+        </div>
+      </div>
+    </div>
+    <div id="footer"></div>
+  </div>
+  <script>
+    user = document.getElementById("username");
+    pwd = document.getElementById("password");
+    function verify() {
+      fetch('http://localhost:3000/getCredentials?value=' + encodeURIComponent(user.value))
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          if(data[0].password == pwd.value){
+            console.log("he is verified!!")
+          }
+          else if(data[0].password != pwd.value){
+            pwd.value = "";
+            alert("Incorrect password.");
+          }
+        }).catch(error => {
+          alert("Invalid Username!");
+        });
+
+        
+    }
+  </script>
+</body>
+
+</html>
