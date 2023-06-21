@@ -13,29 +13,38 @@
         </div>
         <div id="main-content">
             <div id="menu">
-                <div id="idSelect">
-                    <label>Enter the Student ID:</label><br>
-                    <datalist id="suggestions">
-                    </datalist>
-                    <input  autoComplete="on" list="suggestions"/> 
-                </div>
-                <div id="activitySelect">
-                    <label>Enter the Student ID:</label><br>
-                </div>
-                <div id="dateSelect">
-                    <label>Enter the Student ID:</label><br>
-                </div>
+                <form id="updatePoint">
+                    <div id="idSelect">
+                        <label>Enter the Student ID:</label><br>
+                        <datalist id="suggestions">
+                        </datalist>
+                        <input autoComplete="on" list="suggestions" onchange="displayname()" id="selection" required />
+                        <p id="name"></p>
+                    </div>
+                    <div id="activitySelect">
+                        <label>Activity Attended: </label><br>
+
+                    </div>
+                    <div id="dateSelect">
+                        <label>Date attended:</label><br>
+                        <input type="date" id="date" required>
+                        <input type="submit">
+                    </div>
+                </form>
             </div>
 
         </div>
         <div id="footer"></div>
     </div>
     <script>
+        var names = [];
         fetch('http://localhost:3000/data')
             .then(response => response.json())
-            .then(data => {data.map(row => {
+            .then(data => {
+                data.map(row => {
                     const option = document.createElement("option");
-                    option.textContent = row.ID
+                    option.textContent = row.ID;
+                    names.push({ id: row.ID, name: row.Name });
                     document.getElementById("suggestions").appendChild(option);
                 });
             })
@@ -43,7 +52,81 @@
                 // Handle any errors
                 console.error(error);
             });
-        
+
+        function displayname() {
+            dropdown = document.getElementById("selection");
+            nameheader = document.getElementById("name");
+            for (let i = 0; i < names.length; i++) {
+                if (names[i].id == dropdown.value) {
+                    nameheader.textContent = names[i].name;
+                }
+            }
+        }
+    </script>
+    <script>
+        const container = document.getElementById("activitySelect");
+        var activities = ["FBLA", "Math Team", "Model UN", "Mock Trial", "Spanish Club", "Wrestling Meet", "Swim Meet", "Soccer Meet", "Football Meet", "Track"];
+        for (let i = 0; i < activities.length; i++) {
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = activities[i];
+
+            // Create a label for the checkbox
+            var label = document.createElement('label');
+            // label.htmlFor = activities[i];
+            label.appendChild(document.createTextNode(activities[i]));
+
+            container.appendChild(checkbox);
+            container.appendChild(label);
+        }
+
+        function countPoints() {
+            var points = 0;
+            for (let i = 0; i < activities.length; i++) {
+                if (document.getElementById(activities[i]).checked) {
+                    points += 10;
+                }
+            }
+            return points;
+        }
+        const form = document.getElementById('updatePoint');
+
+        // Add an event listener to the form's submit event
+        form.addEventListener('submit', function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            update();
+        });
+
+        function update() {
+            const data = {
+                points: countPoints(),
+                id: document.getElementById("selection").value,
+            };
+            fetch('http://localhost:3000/updatePoints', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    console.log(result);
+                })
+                .catch((error) => {
+                    console.log("error:", result);
+                });
+
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script>
+        const datePicker = document.getElementById("date");
+        const dateOneWeekAgo = moment().subtract(1, 'week').format("YYYY-MM-DD");
+        const dateOneWeekLater = moment().format("YYYY-MM-DD");
+        datePicker.max = dateOneWeekLater;
+        datePicker.min = dateOneWeekAgo;
     </script>
 
 </body>

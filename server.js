@@ -5,9 +5,13 @@ const cors = require('cors');
 // ...
 
 const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.json()); // Parse JSON request body
+app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded request body
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
@@ -205,6 +209,29 @@ app.get('/getRandWins', (req, res) => {
                     });
             }
         }
+    });
+
+    app.post('/updatePoints', (req, res) => {
+        pool.getConnection((err, connection) => {
+    
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+    
+            // Query the database to select other columns of the same row
+            console.log([req.body.points, req.body.id]);
+            const query = "UPDATE nchs.track SET Points = (Points + ?) WHERE (ID = ?)";
+            connection.query(query, [req.body.points, req.body.id], (error, results) => {
+                connection.release();
+                if (error) {
+                    console.error('Error executing the query:', error);
+                    res.status(500).send('Internal Server Error');
+                    return;
+                }
+                res.json(results);
+            });
+        });
     });
 
 // Start the server
