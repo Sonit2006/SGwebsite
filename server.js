@@ -76,7 +76,7 @@ app.get('/getCredentials', (req, res) => {
         const value = req.query.value;
 
         // Query the database to select other columns of the same row
-        const query = "SELECT password FROM nchs.track WHERE ID = ?";
+        const query = "SELECT Name, password FROM nchs.track WHERE ID = ?";
         connection.query(query, [value], (error, results) => {
             connection.release();
             if (error) {
@@ -181,48 +181,58 @@ function executeQuery(connection, query) {
 };
 
 app.get('/getRandWins', (req, res) => {
-        var randWinnerInfo = [];
-        let randWinners;
-        fetch('http://localhost:3000/getPrizes')
-            .then(response => response.json())
-            .then(data => {
-                const prizes = data.map(row => row.Name);
-                randWinners = prizes.slice(0, 4);
-                getInfo();
-                // return getInfo();
-                // console.log(randWinners.length);
+    var randWinnerInfo = [];
+    let randWinners;
+    fetch('http://localhost:3000/getPrizes')
+        .then(response => response.json())
+        .then(data => {
+            const prizes = data.map(row => row.Name);
+            randWinners = prizes.slice(0, 4);
+            getInfo();
+            // return getInfo();
+            // console.log(randWinners.length);
 
-            });
+        });
 
-        //calling getotherColumns api to get other info about the random winners
-        function getInfo() {
-            for (let i = 0; i < randWinners.length; i++) {
-                // console.log(randWinners);
-                fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(randWinners[i].slice(1, randWinners[i].length)))
-                    .then(response => response.json())
-                    .then(data => {
-                        randWinnerInfo.push(data);
-                        if (i === randWinners.length - 1) {
-                            // Send the response with the populated randWinnerInfo array
-                            res.send(randWinnerInfo);
-                        }
-                    });
-            }
+    //calling getotherColumns api to get other info about the random winners
+    function getInfo() {
+        for (let i = 0; i < randWinners.length; i++) {
+            // console.log(randWinners);
+            fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(randWinners[i].slice(1, randWinners[i].length)))
+                .then(response => response.json())
+                .then(data => {
+                    randWinnerInfo.push(data);
+                    if (i === randWinners.length - 1) {
+                        // Send the response with the populated randWinnerInfo array
+                        res.send(randWinnerInfo);
+                    }
+                });
         }
-    });
+    }
+});
 
-    app.post('/updatePoints', (req, res) => {
-        pool.getConnection((err, connection) => {
-    
-            if (err) {
-                console.error('Error getting connection from pool:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
+app.post('/updatePoints', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Query the database to select other columns of the same row
+        console.log([req.body.points, req.body.id]);
+        const query = "UPDATE nchs.track SET Points = (Points + ?) WHERE (ID = ?)";
+        connection.query(query, [req.body.points, req.body.id], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
             }
-    
-            // Query the database to select other columns of the same row
-            console.log([req.body.points, req.body.id]);
-            const query = "UPDATE nchs.track SET Points = (Points + ?) WHERE (ID = ?)";
-            connection.query(query, [req.body.points, req.body.id], (error, results) => {
+        });
+
+        for (let i = 0; i < req.body.activity.length; i++) {
+            connection.query("INSERT INTO nchs.date (studentID, date, activity) VALUES (?,?,?)", [req.body.id, req.body.date, req.body.activity[i]], (error, results) => {
                 connection.release();
                 if (error) {
                     console.error('Error executing the query:', error);
@@ -230,8 +240,55 @@ app.get('/getRandWins', (req, res) => {
                     return;
                 }
             });
+        }
+    });
+
+});
+
+app.get('/getRank', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Query the database to select other columns of the same row
+        const query = "SELECT ID, Points FROM nchs.track ORDER BY Points DESC";
+        connection.query(query, (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.json(results);
         });
     });
+});
+
+app.get('/getActivity', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        value = req.query.value;
+        // Query the database to select other columns of the same row
+        const query = "SELECT date, activity FROM nchs.date WHERE studentID = ? ORDER BY date DESC";
+        connection.query(query, [value], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.json(results);
+        });
+    });
+});
 
 // Start the server
 app.listen(3000, () => {

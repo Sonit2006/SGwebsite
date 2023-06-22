@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <title> Student Genius</title>
+    <link href="teacherHomeStyles.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-car.css">
+    <style>
+        .odometer {
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="banner">
+            <button id="home" onclick="redirect()"><img src="logo.png"></button>
+            <h1 align="center">Student Genius</h1>
+        </div>
+        <div id="main-content">
+            <h2>Your Points</h2><br>
+            <div id="myOdometer" class="odometer"></div><br>
+            <div id="menu">
+                <h2>Your Place:</h2>
+                <div id="rankOdometer" class="odometer"></div>
+            </div>
+            <div class="left" id="updates"></div>
+        </div>
+    </div>
+
+    </div>
+    <div id="footer"></div>
+    </div>
+    <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
+    <script>
+        window.botpressWebChat.init({
+            "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+            "hostUrl": "https://cdn.botpress.cloud/webchat/v0",
+            "messagingUrl": "https://messaging.botpress.cloud",
+            "clientId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+            "showPoweredBy": true
+        });
+    </script>
+    <script src="http://github.hubspot.com/odometer/odometer.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams.get("username"));
+        fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(urlParams.get("name")))
+            .then(response => response.json())
+            .then(data => {
+
+                var odometer = new Odometer({
+                    el: document.getElementById("myOdometer"), // Replace with your target element selector
+                    value: 0,
+                });
+                odometer.update(data[0].Points);
+            });
+
+        fetch("http://localhost:3000/getRank")
+            .then(response => response.json())
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].ID == urlParams.get("username")) {
+                        var odometer = new Odometer({
+                            el: document.getElementById("rankOdometer"), // Replace with your target element selector
+                            value: 0,
+                        });
+                        odometer.update(i+1);
+                        break;
+                    }
+                }
+            })
+    </script>
+    <script>
+        fetch("http://localhost:3000/getActivity?value="+encodeURIComponent(urlParams.get("username")))
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            for (let i = 0; i < data.length; i++){
+                
+                const activity = document.createElement("p");
+                activity.textContent = data[i].activity + " on " + data[i].date;
+                document.getElementById("updates").appendChild(activity);
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>

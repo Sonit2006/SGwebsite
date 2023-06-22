@@ -34,7 +34,8 @@
         .then(data => {
           console.log(data)
           if(data[0].password == pwd.value){
-            console.log("he is verified!!")
+            const username = user.value;
+            window.location = "studentHome.html?username=" + encodeURIComponent(username) + "&name=" + encodeURIComponent(data[0].Name);
           }
           else if(data[0].password != pwd.value){
             pwd.value = "";

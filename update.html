@@ -54,6 +54,16 @@
         </div>
         <div id="footer"></div>
     </div>
+    <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
+    <script>
+        window.botpressWebChat.init({
+            "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+            "hostUrl": "https://cdn.botpress.cloud/webchat/v0",
+            "messagingUrl": "https://messaging.botpress.cloud",
+            "clientId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
+            "showPoweredBy": true
+        });
+    </script>
     <script src="http://github.hubspot.com/odometer/odometer.js"></script>
     <script>
         function closeNav() {
@@ -126,9 +136,17 @@
         });
 
         function update() {
+            var selectedActivities = [];
+            for(let i = 0; i < activities.length; i++){
+                if (document.getElementById(activities[i]).checked){
+                    selectedActivities.push(activities[i]);
+                }
+            }
             const data = {
                 points: countPoints(),
                 id: document.getElementById("selection").value,
+                date: document.getElementById("date").value,
+                activity: selectedActivities
             };
             fetch('http://localhost:3000/updatePoints', {
                 method: 'POST',
@@ -154,15 +172,15 @@
                         el: document.getElementById("myOdometer"), // Replace with your target element selector
                         value: 0,
                     });
-                    odometer.update(data[0].Points);
+                    odometer.update(data[0].Points - countPoints());
                     setTimeout(() => {
                         document.getElementById("confirmUpdate").style.display = "block";
                     }, 0);
-                    console.log("Updated Points for " + document.getElementById("name").textContent + " from " + data[0].Points + " to " + data[0].Points + countPoints());
-                    setTimeout(() => { odometer.update(data[0].Points + countPoints()) }, 1000);
+                    // console.log("Updated Points for " + document.getElementById("name").textContent + " from " + data[0].Points + " to " + data[0].Points + countPoints());
+                    setTimeout(() => { odometer.update(data[0].Points) }, 1000);
                     
                     setTimeout(() => {
-                        document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points).toString() + " to " + (data[0].Points + countPoints()).toString();
+                        document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points - countPoints()).toString() + " to " + (data[0].Points).toString();
                     }, 1000);
                 })
                 .catch(error => {
