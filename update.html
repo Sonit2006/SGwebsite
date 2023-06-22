@@ -3,9 +3,85 @@
 <head>
     <title> Student Genius</title>
     <link rel="stylesheet" href="styles.css" type="text/css">
+    <link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-car.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        .overlay {
+            height: 100%;
+            width: 100%;
+            display: none;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .overlay-content {
+            position: relative;
+            top: 25%;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .overlay a {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 36px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .overlay a:hover,
+        .overlay a:focus {
+            color: #f1f1f1;
+        }
+
+        .overlay .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .overlay a {
+                font-size: 20px
+            }
+
+            .overlay .closebtn {
+                font-size: 40px;
+                top: 15px;
+                right: 35px;
+            }
+        }
+
+        .odometer {
+            font-size: 100px;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- The overlay -->
+    <div id="confirmUpdate" class="overlay">
+
+        <!-- Button to close the overlay navigation -->
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+        <!-- Overlay content -->
+        <div class="overlay-content">
+            <div id="myOdometer" class="odometer"></div><br><br>
+            <p id="tellUpdate"></p>
+        </div>
+    </div>
+
     <div id="wrapper">
         <div id="banner">
             <img src="logo.png">
@@ -36,6 +112,12 @@
         </div>
         <div id="footer"></div>
     </div>
+    <script src="http://github.hubspot.com/odometer/odometer.js"></script>
+    <script>
+        function closeNav() {
+            document.getElementById("confirmUpdate").style.display = "none";
+        }
+    </script>
     <script>
         var names = [];
         fetch('http://localhost:3000/data')
@@ -118,6 +200,33 @@
                     console.log("error:", result);
                 });
 
+
+            fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(document.getElementById("name").textContent))
+                .then(response => response.json())
+                .then(data => {
+
+                    var odometer = new Odometer({
+                        el: document.getElementById("myOdometer"), // Replace with your target element selector
+                        value: 0,
+                    });
+                    odometer.update(data[0].Points);
+                    setTimeout(() => {
+                        document.getElementById("confirmUpdate").style.display = "block";
+                    }, 0);
+                    console.log("Updated Points for " + document.getElementById("name").textContent + " from " + data[0].Points + " to " + data[0].Points + countPoints());
+                    setTimeout(() => { odometer.update(data[0].Points + countPoints()) }, 1000);
+                    
+                    setTimeout(() => {
+                        document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points).toString() + " to " + (data[0].Points + countPoints()).toString();
+                    }, 1000);
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error(error);
+                });
+
+
+
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -128,7 +237,6 @@
         datePicker.max = dateOneWeekLater;
         datePicker.min = dateOneWeekAgo;
     </script>
-
 </body>
 
 </html>
