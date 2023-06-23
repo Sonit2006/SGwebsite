@@ -102,7 +102,7 @@ body {
     }
 
     #main-content {
-       /* padding-top: 10px;*/
+        /* padding-top: 10px;*/
         max-width: 100%;
         max-height: 1200px;
         background-image: url("background.jpg");
@@ -115,19 +115,20 @@ body {
         margin-left: 10%;
         margin-right: 10%;
         padding-left: 20px;
-        background-color: azure;
+        /*background-color: azure;*/
         height: 900px;
     }
 
     #heading {
         margin-top: 60px;
-        margin-left: 10%;
+        margin-left: 5%;
         margin-right: 5%;
         border-radius: 10px;
         border: 2px double #e7e2e2;
         background-color: darkblue;
     }
-    #heading h2{
+
+    #heading h2 {
         font-family: 'Raleway';
         font-size: 2.2em;
         font-weight: bold;
@@ -138,7 +139,7 @@ body {
 
     #idselect {
         margin-top: 40px;
-        margin-left: 10%;
+        margin-left: 5%;
         margin-right: 5%;
         height: 170px;
         border: 2px double #e7e2e2;
@@ -155,15 +156,17 @@ body {
         font-size: 1.5em;
     }
 
-    #idselect input {
+    #idselect input{
 
         width: 30%;
         height: 40px;
         background-color: #00008b;
         color: rgb(246, 178, 6);
         font-size: 1.2em;
+        
     }
 
+   
     #idselect p {
         padding-top: 20px;
         font-size: 1.5em;
@@ -172,7 +175,7 @@ body {
 
     #activitySelect {
         margin-top: 10px;
-        margin-left: 10%;
+        margin-left: 5%;
         margin-right: 5%;
         border: 1px solid #e7e2e2;
         border-radius: 10px;
@@ -203,14 +206,14 @@ body {
 
     #dateSelect {
         margin-top: 10px;
-        margin-left: 10%;
+        margin-left: 5%;
         margin-right: 5%;
         margin-bottom: 2%;
         border: 1px solid #e7e2e2;
         border-radius: 10px;
         padding: 8px;
         background-color: #ddd;
-        height: 150px;
+        height: 170px;
     }
 
     #dateSelect label {
