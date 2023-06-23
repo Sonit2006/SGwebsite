@@ -22,9 +22,18 @@
             <div id="myOdometer" class="odometer"></div><br>
             <div id="menu">
                 <h2>Your Place:</h2>
-                <div id="rankOdometer" class="odometer"></div>
+                <div id="rankOdometer" class="odometer"></div><br>
+                <select id="selectActivity" onchange="filter(recents)">
+                    <option>Last 7 days</option>
+                    <option>Last 14 days</option>
+                    <option>Last 30 days</option>
+                    <option>Last 90 days</option>
+                    <option>School Year</option>
+                </select>
             </div>
-            <div class="left" id="updates"></div>
+            <div class="left" id="updates">
+                
+            </div>
         </div>
     </div>
 
@@ -65,26 +74,46 @@
                             el: document.getElementById("rankOdometer"), // Replace with your target element selector
                             value: 0,
                         });
-                        odometer.update(i+1);
+                        odometer.update(i + 1);
                         break;
                     }
                 }
             })
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
-        fetch("http://localhost:3000/getActivity?value="+encodeURIComponent(urlParams.get("username")))
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            for (let i = 0; i < data.length; i++){
-                
-                const activity = document.createElement("p");
-                activity.textContent = data[i].activity + " on " + data[i].date;
-                document.getElementById("updates").appendChild(activity);
-            }
-        })
-    </script>
+        var recents;
+        fetch("http://localhost:3000/getActivity?value=" + encodeURIComponent(urlParams.get("username")))
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                filter(data);
+            })
 
+        function filter(data) {
+            recents = data;
+            document.getElementById("updates").innerHTML = '';
+            for (let i = 0; i < data.length; i++) {
+                if (document.getElementById("selectActivity").value.match(/\d+/) != null) {
+                    if (data[i].date >= moment().subtract(parseInt(document.getElementById("selectActivity").value.match(/\d+/)), "days").format("YYYY-MM-DD")) {
+                        const activity = document.createElement("p");
+                        activity.textContent = data[i].activity + " on " + data[i].date;
+                        document.getElementById("updates").appendChild(activity);
+                    }
+                }
+                else {
+                    if (data[i].date >= moment().subtract(1, "year").format("YYYY-MM-DD")) {
+                        const activity = document.createElement("p");
+                        activity.textContent = data[i].activity + " on " + data[i].date;
+                        document.getElementById("updates").appendChild(activity);
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+
+    </script>
 
 </body>
 
