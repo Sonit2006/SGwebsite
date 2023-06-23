@@ -45,7 +45,7 @@
                     </div>
                     <div id="dateSelect">
                         <label>Date attended:</label><br>
-                        <input type="date" id="date" required>
+                        <input type="date" id="date" onchange="correct()" required>
                         <input type="submit">
                     </div>
                 </form>
@@ -68,6 +68,7 @@
     <script>
         function closeNav() {
             document.getElementById("confirmUpdate").style.display = "none";
+            location.reload();
         }
     </script>
     <script>
@@ -95,6 +96,7 @@
                     nameheader.textContent = names[i].name;
                 }
             }
+            correct();
         }
     </script>
     <script>
@@ -133,9 +135,11 @@
             // Prevent the default form submission behavior
             event.preventDefault();
             update();
+            
         });
 
         function update() {
+            
             var selectedActivities = [];
             for(let i = 0; i < activities.length; i++){
                 if (document.getElementById(activities[i]).checked){
@@ -181,24 +185,40 @@
                     
                     setTimeout(() => {
                         document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points - countPoints()).toString() + " to " + (data[0].Points).toString();
-                    }, 1000);
+                        
+                    }, 4000);
+
+
                 })
                 .catch(error => {
                     // Handle any errors
                     console.error(error);
                 });
-
-
-
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
         const datePicker = document.getElementById("date");
         const dateOneWeekAgo = moment().subtract(1, 'week').format("YYYY-MM-DD");
-        const dateOneWeekLater = moment().format("YYYY-MM-DD");
-        datePicker.max = dateOneWeekLater;
+        const today = moment().format("YYYY-MM-DD");
+        datePicker.max = today;
         datePicker.min = dateOneWeekAgo;
+        datePicker.value = today;
+    </script>
+    <script>
+        function correct(){
+        fetch("http://localhost:3000/getActivity?value="+encodeURIComponent(document.getElementById("selection").value))
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++){
+                if (data[i].date == datePicker.value){
+                    document.getElementById(data[i].activity).disabled = true;
+                }
+                else{
+                    document.getElementById(data[i].activity).disabled = false;
+                }
+            }
+        })}
     </script>
 </body>
 
