@@ -1,0 +1,71 @@
+@media only screen and (min-width: 769px) {
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #wrapper {
+        width: 100%;
+        border: snow;
+        margin-right: auto;
+        margin-left: auto;
+        font-family: 'Raleway';
+        background-image: url("background.jpg");
+    }
+
+    #banner {
+        height: 98px;
+        background-color: darkblue;
+    }
+
+    #banner h1 {
+        padding-top: 20px;
+        font-family: 'Raleway';
+        text-align: center;
+        font-size: 3em;
+        color: white;
+        position: relative;
+    }
+
+    #banner img {
+        height: 98px;
+        width: 200px;
+        float: left;
+        position: absolute;
+    }
+
+    #main-content {
+        padding-top: 20px;
+        max-width: 100%;
+        max-height: 1200px;
+        background-image: url("background.jpg");
+        position: relative;
+    }
+
+
+
+ * {
+    box-sizing: border-box;
+  }
+  
+  /* Create two equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 800px; /* Should be removed. Only for demonstration */
+    border-color: black ;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  #footer {
+    background-image: url("background.jpg");
+    height: 340px;
+    clear: both;
+}
+}
