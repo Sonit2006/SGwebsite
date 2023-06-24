@@ -23,13 +23,6 @@
             <div id="menu">
                 <h2>Your Place:</h2>
                 <div id="rankOdometer" class="odometer"></div><br>
-                <div id="progress">
-                    <canvas id="progressChart"></canvas>
-                    <table>
-                        <tr id="titles"></tr>
-                        <tr id="quarter"></tr>
-                    </table>
-                </div>
                 <select id="selectActivity" onchange="filter(recents)">
                     <option>Last 7 days</option>
                     <option>Last 14 days</option>
@@ -39,7 +32,7 @@
                 </select>
             </div>
             <div class="left" id="updates">
-
+                
             </div>
         </div>
     </div>
@@ -81,13 +74,12 @@
                             el: document.getElementById("rankOdometer"), // Replace with your target element selector
                             value: 0,
                         });
-                        odometer.update(i + 1);
+                        odometer.update(i+1);
                         break;
                     }
                 }
             })
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
         var recents;
         fetch("http://localhost:3000/getActivity?value=" + encodeURIComponent(urlParams.get("username")))
@@ -118,77 +110,10 @@
             }
         }
     </script>
-    <script src="C:\Users\Sonit Maddineni\Documents\GitHub\SGwebsite\xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     <script>
-        const name = urlParams.get("name");
-        let pointRows = [];
-        for (let i = 0; i < 3; i++) {
-            if ((Number(moment().format("M")) >= [11, 1, 4][i]) && (Number(moment().format("M")) <= [11, 1, 4][i]) + 2) {
-                for (let j = 0; j < i + 2; j++) {
-                    const title = document.createElement("th");
-                    title.textContent = "Quarter " + (j + 1).toString();
-                    document.getElementById("titles").appendChild(title);
-                    pointRows.push(document.createElement("td"));
-                }
-                break;
-            }
 
-        }
-
-
-        fetch("http://localhost:3000/getReportData")
-            .then(response => response.json())
-            .then(data => {
-                for (let i = 9; i < data.length; i++) {
-                    console.log(data[i].includes(name),);
-                    if (data[i].includes(name)) {
-                        makeChart(data[i]);
-                        for (let j = 0; j < pointRows.length; j++) {
-                            console.log(data[i][data[i].indexOf(name) + j + 2]);
-                            pointRows[j].textContent = data[i][data[i].indexOf(name) + j + 2];
-                            document.getElementById("quarter").appendChild(pointRows[j]);
-                        }
-                        break;
-                    }
-
-                }
-                // console.log(data);
-            })
-
-        function makeChart(list) {
-            const ctx = document.getElementById('progressChart').getContext('2d');
-            let pointList = [];
-            let labels = [];
-            for (let j = 0; j < pointRows.length; j++) {
-                labels.push("Quarter " + (j+1).toString());
-                pointList.push(Number(list[list.indexOf(name) + j + 2]));
-            }
-
-            // Define your data for the chart
-            const data = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'My Dataset',
-                        data: pointList,
-                        backgroundColor: 'red',
-                        borderColor: 'Blue',
-                        borderWidth: 1
-                    }
-                ]
-            };
-
-            // Create the chart
-            const myChart = new Chart(ctx, {
-                type: 'bar',
-                data: data,
-                options: {}
-            });
-
-        }
     </script>
-    
+
 </body>
 
 </html>
