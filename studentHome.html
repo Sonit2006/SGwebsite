@@ -2,7 +2,7 @@
 
 <head>
     <title> Student Genius</title>
-    <link href="teacherHomeStyles.css" rel="stylesheet" type="text/css">
+    <link href="studentHomeStyles.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-car.css">
     <style>
         .odometer {
@@ -14,33 +14,67 @@
 <body>
     <div id="wrapper">
         <div id="banner">
-            <button id="home" onclick="redirect()"><img src="logo.png"></button>
-            <h1 align="center">Student Genius</h1>
+            <div class="left"><img src="logo.png">
+                <h1 align="center">Student Genius</h1>
+            </div>
+            <div class="right">
+                <input type="button" value="Sign Out" onclick="signOut()">
+            </div>
+
         </div>
         <div id="main-content">
-            <h2>Your Points</h2><br>
-            <div id="myOdometer" class="odometer"></div><br>
-            <div id="menu">
-                <h2>Your Place:</h2>
-                <div id="rankOdometer" class="odometer"></div><br>
-                <select id="selectActivity" onchange="filter(recents)">
-                    <option>Last 7 days</option>
-                    <option>Last 14 days</option>
-                    <option>Last 30 days</option>
-                    <option>Last 90 days</option>
-                    <option>School Year</option>
-                </select>
-            </div>
-            <div class="left" id="updates">
-                
+            <!-- <h2>Your Points</h2><br> -->
+            <div class="row">
+                <div class="column1" style="background-color: darkblue;">
+                    <h2> Recent Updates </h2><br>
+                    <div id="choose">
+                        <select id="selectActivity" onchange="filter(recents)">
+                            <option>Last 7 days</option>
+                            <option>Last 14 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                            <option>School Year</option>
+                        </select><br>
+                    </div><br><br>
+                    <div id="updates"></div>
+
+                </div>
+                <div class="column2" align="center" style="background-color: #bbb;">
+                    <div>
+                        <h2 id="studentName" style="background-color: darkblue; width: 150px; color: gold;"></h2><br>
+                        <h2>Your Points</h2>
+                        <div id="myOdometer" class="odometer"></div><br><br>
+
+                        <h2>Your Place:</h2>
+                        <div id="rankOdometer" class="odometer"></div><br>
+                    </div><br><br><br>
+                    <div id="box">
+                        <div id="progress">
+                            <canvas id="progressChart"></canvas><br><br>
+                            <table id="headings">
+                                <tr id="titles">
+                                    <th></th>
+                                </tr>
+                                <tr id="quarter">
+                                    <th>Points</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="column3" style="background-color: #bbb;">
+                    <input type="button" align="center" id="winners" value="Show Winners" onclick="showWinners()">
+                </div>
             </div>
         </div>
-    </div>
 
     </div>
     <div id="footer"></div>
     </div>
     <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script>
         window.botpressWebChat.init({
             "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
@@ -54,6 +88,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         console.log(urlParams.get("username"));
+        document.getElementById("studentName").textContent = urlParams.get("name");
         fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(urlParams.get("name")))
             .then(response => response.json())
             .then(data => {
@@ -74,7 +109,7 @@
                             el: document.getElementById("rankOdometer"), // Replace with your target element selector
                             value: 0,
                         });
-                        odometer.update(i+1);
+                        odometer.update(i + 1);
                         break;
                     }
                 }
@@ -98,6 +133,7 @@
                         const activity = document.createElement("p");
                         activity.textContent = data[i].activity + " on " + data[i].date;
                         document.getElementById("updates").appendChild(activity);
+                        document.getElementById("updates").appendChild(document.createElement("br"));
                     }
                 }
                 else {
@@ -105,15 +141,105 @@
                         const activity = document.createElement("p");
                         activity.textContent = data[i].activity + " on " + data[i].date;
                         document.getElementById("updates").appendChild(activity);
+                        document.getElementById("updates").appendChild(document.createElement("br"));
                     }
                 }
             }
         }
     </script>
+    <script src="C:\Users\Sonit Maddineni\Documents\GitHub\SGwebsite\xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     <script>
+        const user = urlParams.get("username");
+        const name = urlParams.get("name");
+        let pointRows = [];
+        for (let i = 0; i < 3; i++) {
+            if ((Number(moment().format("M")) >= [11, 1, 4][i]) && (Number(moment().format("M")) <= [11, 1, 4][i]) + 2) {
+                for (let j = 0; j < i + 2; j++) {
+                    const title = document.createElement("th");
+                    title.textContent = "Quarter " + (j + 1).toString();
+                    document.getElementById("titles").appendChild(title);
+                    pointRows.push(document.createElement("td"));
+                }
+                break;
+            }
+        }
 
+
+        fetch("http://localhost:3000/getReportData")
+            .then(response => response.json())
+            .then(data => {
+                for (let i = 9; i < data.length; i++) {
+                    console.log(data[i].includes(name),);
+                    if (data[i].includes(name)) {
+                        makeChart(data[i]);
+                        for (let j = 0; j < pointRows.length; j++) {
+                            console.log(data[i][data[i].indexOf(name) + j + 2]);
+                            pointRows[j].textContent = data[i][data[i].indexOf(name) + j + 2];
+                            document.getElementById("quarter").appendChild(pointRows[j]);
+                        }
+                        break;
+                    }
+                }
+                // console.log(data);
+            })
+
+        function makeChart(list) {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            let pointList = [];
+            let labels = [];
+            for (let j = 0; j < pointRows.length; j++) {
+                labels.push("Quarter " + (j + 1).toString());
+                pointList.push(Number(list[list.indexOf(name) + j + 2]));
+            }
+
+            // Define your data for the chart
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Points for each quarter',
+                        data: pointList,
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 205, 86, 0.2)'],
+                        borderColor: [
+                            'rgba(54, 162, 235)',
+                            'rgba(153, 102, 255)',
+                            'rgba(255, 99, 132)',
+                            'rgba(255, 205, 86)'],
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            // Create the chart
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {}
+            });
+
+        }
+    </script>
+    <script type="text/javascript">
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
     </script>
 
+    <script>
+        function showWinners() {
+            window.location = "studentWinners.html?username=" + user + "&name=" + name;
+        }
+
+        function signOut() {
+            window.location = 'index.html';
+        }
+    </script>
 </body>
 
 </html>

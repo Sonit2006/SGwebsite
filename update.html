@@ -22,7 +22,7 @@
 
     <div id="wrapper">
         <div id="banner">
-            <img src="logo.png">
+            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98" style="float: left;">
             <h1 align="center">Student Genius</h1>
         </div>
         <div id="main-content">
@@ -30,14 +30,15 @@
                 <div id="heading">
                     <h2> Update Form</h2>
                 </div>
-           
+
                 <form id="updatePoint">
-                   
+
                     <div id="idSelect">
                         <label>Enter the Student ID:</label><br>
                         <datalist id="suggestions">
                         </datalist>
-                        <input autoComplete="on" list="suggestions" onchange="displayname()" id="selection" required /><br>
+                        <input autoComplete="on" list="suggestions" onchange="displayname()" id="selection"
+                            required /><br>
                         <p id="name"></p>
                     </div>
                     <div id="activitySelect">
@@ -70,6 +71,11 @@
             document.getElementById("confirmUpdate").style.display = "none";
             location.reload();
         }
+
+        function redirect() {
+            window.location = "teacherHome.html";
+        }
+
     </script>
     <script>
         var names = [];
@@ -103,7 +109,7 @@
         const container = document.getElementById("activitySelect");
         var activities = ["FBLA", "Math Team", "Model UN", "Mock Trial", "Spanish Club", "Wrestling Meet", "Swim Meet", "Soccer Meet", "Football Meet", "Track"];
         for (let i = 0; i < activities.length; i++) {
-            if(i==5){
+            if (i == 5) {
                 container.appendChild(document.createElement("br"));
             }
             var checkbox = document.createElement("input");
@@ -135,14 +141,14 @@
             // Prevent the default form submission behavior
             event.preventDefault();
             update();
-            
+
         });
 
         function update() {
-            
+
             var selectedActivities = [];
-            for(let i = 0; i < activities.length; i++){
-                if (document.getElementById(activities[i]).checked){
+            for (let i = 0; i < activities.length; i++) {
+                if (document.getElementById(activities[i]).checked) {
                     selectedActivities.push(activities[i]);
                 }
             }
@@ -182,10 +188,10 @@
                     }, 0);
                     // console.log("Updated Points for " + document.getElementById("name").textContent + " from " + data[0].Points + " to " + data[0].Points + countPoints());
                     setTimeout(() => { odometer.update(data[0].Points) }, 1000);
-                    
+
                     setTimeout(() => {
                         document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points - countPoints()).toString() + " to " + (data[0].Points).toString();
-                        
+
                     }, 4000);
 
 
@@ -206,19 +212,20 @@
         datePicker.value = today;
     </script>
     <script>
-        function correct(){
-        fetch("http://localhost:3000/getActivity?value="+encodeURIComponent(document.getElementById("selection").value))
-        .then(response => response.json())
-        .then(data => {
-            for (let i = 0; i < data.length; i++){
-                if (data[i].date == datePicker.value){
-                    document.getElementById(data[i].activity).disabled = true;
-                }
-                else{
-                    document.getElementById(data[i].activity).disabled = false;
-                }
-            }
-        })}
+        function correct() {
+            fetch("http://localhost:3000/getActivity?value=" + encodeURIComponent(document.getElementById("selection").value))
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].date == datePicker.value) {
+                            document.getElementById(data[i].activity).disabled = true;
+                        }
+                        else {
+                            document.getElementById(data[i].activity).disabled = false;
+                        }
+                    }
+                })
+        }
     </script>
 </body>
 

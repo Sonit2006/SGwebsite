@@ -8,8 +8,12 @@
 <body>
     <div id="wrapper">
         <div id="banner">
-            <button id="home" onclick="redirect()"><img src="logo.png"></button>
-            <h1 align="center">Student Genius</h1>
+            <div class="left1"><img src="logo.png">
+                <h1 align="center">Student Genius</h1>
+            </div>
+            <div class="right1">
+                <input type="button" value="Sign Out" onclick="signOut()">
+            </div>
         </div>
         <div id="main-content">
             <div id="updateBtn">
@@ -21,7 +25,8 @@
                             value="Generate report">
                     </li>
                     <a id="downloadLink" style="display: none;"></a>
-                    <li><input type="button" align="center" id="winners" value="Show Winners" onclick="showWinners()"></li>
+                    <li><input type="button" align="center" id="winners" value="Show Winners" onclick="showWinners()">
+                    </li>
                 </div>
                 <div class="right">
                     <div id="box1">
@@ -32,10 +37,10 @@
                             <div id="submit"><input type="button" onclick="displayResult()" value="Search" /></div>
                             <div id="result" align="left"></div><br><br><br><br>
                             <div id="dropdown" class="dropdown-content" align="center"></div>
-                            
-                        </form>   
+
+                        </form>
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -53,7 +58,7 @@
         });
     </script>
     <script>
-        function navigate(){
+        function navigate() {
             window.location = "update.html";
         }
     </script>
@@ -143,25 +148,33 @@
             downloadLink.click();
         }
 
-        function showWinners(){
+        function showWinners() {
             window.location = "winners.html";
         }
     </script>
     <script>
-        function redirect(){
-        window.location = "index.html";
-    }
 
-    document.addEventListener('click', function(event) {
-      const widget = document.getElementById('searchInput');
-      const clickedElement = event.target;
+        document.addEventListener('click', function (event) {
+            const widget = document.getElementById('searchInput');
+            const clickedElement = event.target;
 
-      // Check if the clicked element is the widget or its descendant
-      if (!widget.contains(clickedElement)) {
-        // The click is outside the widget, trigger your function here
-        dropdown.innerHTML = '';
-      }
-    });
+            // Check if the clicked element is the widget or its descendant
+            if (!widget.contains(clickedElement)) {
+                // The click is outside the widget, trigger your function here
+                dropdown.innerHTML = '';
+            }
+        });
+
+        function signOut() {
+            window.location = 'index.html';
+        }
+    </script>
+
+    <script type="text/javascript">
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
     </script>
 
 

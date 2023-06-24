@@ -121,11 +121,11 @@
         }
     </script>
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
         function redirect() {
-            window.location = "teacherHome.html";
+            window.location = "studentHome.html?username=" + urlParams.get("username") + "&name=" + urlParams.get("name");
         }
     </script>
-
 </body>
 
 </html>

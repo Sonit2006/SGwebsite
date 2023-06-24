@@ -92,6 +92,7 @@ body {
         font-size: 3em;
         color: white;
         position: relative;
+        margin-right: 100px;
     }
 
     #banner img {
