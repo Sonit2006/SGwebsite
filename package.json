@@ -1,9 +1,11 @@
 {
   "dependencies": {
+    "chart.js": "^4.3.0",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
     "express": "^4.18.2",
     "mysql2": "^3.3.5",
-    "odometer": "^0.4.8"
+    "odometer": "^0.4.8",
+    "xlsx": "^0.18.5"
   }
 }

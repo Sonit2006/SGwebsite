@@ -33,11 +33,11 @@
         .then(response => response.json())
         .then(data => {
           console.log(data)
-          if(data[0].password == pwd.value){
+          if (data[0].password == pwd.value) {
             const username = user.value;
             window.location = "studentHome.html?username=" + encodeURIComponent(username) + "&name=" + encodeURIComponent(data[0].Name);
           }
-          else if(data[0].password != pwd.value){
+          else if (data[0].password != pwd.value) {
             pwd.value = "";
             alert("Incorrect password.");
           }
@@ -45,9 +45,10 @@
           alert("Invalid Username!");
         });
 
-        
+
     }
   </script>
+
 </body>
 
 </html>

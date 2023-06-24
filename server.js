@@ -6,6 +6,11 @@ const cors = require('cors');
 
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
+const XLSX = require('xlsx');
+
+// Read the Excel file
+const workbook = XLSX.readFile("C://Users/Sonit Maddineni/Documents/ProjectPy/studentGenuis/Report.xlsx");
+
 
 
 const app = express();
@@ -288,6 +293,22 @@ app.get('/getActivity', (req, res) => {
             res.json(results);
         });
     });
+});
+
+app.get('/getReportData', (req, res) => {
+    // Get the first worksheet from the workbook
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    var values = [];
+
+    const cellRange = 'A10:E13';
+
+    // Retrieve the values of the cells in the range
+    const rangeValues = XLSX.utils.sheet_to_json(worksheet, {header: 1 });
+
+    console.log(rangeValues);
+
+    res.send(rangeValues);
+
 });
 
 // Start the server

@@ -2,31 +2,37 @@
 
 <head>
     <title> Student Genius</title>
-    <link rel="stylesheet"  href="styles.css" type="text/css">
+    <link rel="stylesheet" href="styles.css" type="text/css">
 </head>
 
 <body>
     <div id="wrapper">
-        <div id="banner">
-            <img src="logo.png"> <h1 align="center">Student Genius</h1>
-        </div>
+                <div id="banner">
+                <img src="logo.png">
+                <h1 align="center">Student Genius</h1>
+            </div>
+     
         <div id="main-content">
             <div id="menu">
-                <li><input type="button" align="center" id="student" onclick="navigateStudent()" value="Student"></li>
-                <li><input type="button" align="center" id="teacher" onclick="navigateTeacher()" value="Teacher"></li>
+                <div id="box">
+                    <input type="button" align="center" id="student" onclick="navigateStudent()"
+                        value="Student"><br><br>
+                    <input type="button" align="center" id="teacher" onclick="navigateTeacher()" value="Teacher">
+
+                </div>
             </div>
 
         </div>
         <div id="footer"></div>
     </div>
     <script>
-        function navigateStudent(){
+        function navigateStudent() {
             window.location = "studentLogin.html";
         }
-        function navigateTeacher(){
+        function navigateTeacher() {
             window.location = "teacherLogin.html";
         }
-    </script> 
+    </script>
 
 </body>
 
