@@ -21,18 +21,20 @@
     </div>
 
     <div id="wrapper">
+        <!-- Website title and logo -->
         <div id="banner">
-            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98" style="float: left;">
+            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98"
+                style="float: left;">
             <h1 align="center">Student Genius</h1>
         </div>
         <div id="main-content">
+            <!-- boxed divs in this div -->
             <div id="menu">
                 <div id="heading">
                     <h2> Update Form</h2>
                 </div>
-
                 <form id="updatePoint">
-
+                    <!-- div for selecting the id -->
                     <div id="idSelect">
                         <label>Enter the Student ID:</label><br>
                         <datalist id="suggestions">
@@ -41,9 +43,13 @@
                             required /><br>
                         <p id="name"></p>
                     </div>
+
+                    <!-- div for checking the activities -->
                     <div id="activitySelect">
                         <h3>Activity Attended: </h3><br>
                     </div>
+
+                    <!-- div for selecting the date -->
                     <div id="dateSelect">
                         <label>Date attended:</label><br>
                         <input type="date" id="date" onchange="correct()" required>
@@ -55,6 +61,8 @@
         </div>
         <div id="footer"></div>
     </div>
+
+    <!-- this script is to embed the chatbot in the webpage -->
     <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
     <script>
         window.botpressWebChat.init({
@@ -65,6 +73,8 @@
             "showPoweredBy": true
         });
     </script>
+
+    <!-- including the odometer lib -->
     <script src="http://github.hubspot.com/odometer/odometer.js"></script>
     <script>
         function closeNav() {
@@ -78,6 +88,7 @@
 
     </script>
     <script>
+        // getting ID and Names from database
         var names = [];
         fetch('http://localhost:3000/data')
             .then(response => response.json())
@@ -93,7 +104,8 @@
                 // Handle any errors
                 console.error(error);
             });
-
+        
+        // displays name for the selected ID
         function displayname() {
             dropdown = document.getElementById("selection");
             nameheader = document.getElementById("name");
@@ -106,6 +118,7 @@
         }
     </script>
     <script>
+        // appending checkbox elements and displays activity
         const container = document.getElementById("activitySelect");
         var activities = ["FBLA", "Math Team", "Model UN", "Mock Trial", "Spanish Club", "Wrestling Meet", "Swim Meet", "Soccer Meet", "Football Meet", "Track"];
         for (let i = 0; i < activities.length; i++) {
@@ -125,6 +138,7 @@
             container.appendChild(label);
         }
 
+        // counts the seleted activities and stores points
         function countPoints() {
             var points = 0;
             for (let i = 0; i < activities.length; i++) {
@@ -144,6 +158,7 @@
 
         });
 
+        // calls the api endpoint to update the db
         function update() {
 
             var selectedActivities = [];
@@ -173,7 +188,7 @@
                     console.log("error:", result);
                 });
 
-
+            // displays the odometer animation with points in new overlay div
             fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(document.getElementById("name").textContent))
                 .then(response => response.json())
                 .then(data => {
@@ -186,7 +201,7 @@
                     setTimeout(() => {
                         document.getElementById("confirmUpdate").style.display = "block";
                     }, 0);
-                    // console.log("Updated Points for " + document.getElementById("name").textContent + " from " + data[0].Points + " to " + data[0].Points + countPoints());
+                    
                     setTimeout(() => { odometer.update(data[0].Points + countPoints()) }, 1000);
 
                     setTimeout(() => {
@@ -204,6 +219,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
+        // restricting date pick to one week
         const datePicker = document.getElementById("date");
         const dateOneWeekAgo = moment().subtract(1, 'week').format("YYYY-MM-DD");
         const today = moment().format("YYYY-MM-DD");
@@ -212,10 +228,12 @@
         datePicker.value = today;
     </script>
     <script>
+        // disables the checkboxes that were previously checked for the same ID and date.
         function correct() {
             fetch("http://localhost:3000/getActivity?value=" + encodeURIComponent(document.getElementById("selection").value))
                 .then(response => response.json())
                 .then(data => {
+                    // if an activity in the checkboxes is already stored in the database for same ID and date, that checkbox is disabled.
                     for (let i = 0; i < data.length; i++) {
                         if (data[i].date == datePicker.value) {
                             document.getElementById(data[i].activity).disabled = true;

@@ -26,7 +26,7 @@ const pool = mysql.createPool({
     database: 'nchs',
 });
 
-// Define an API endpoint for fetching data
+// API endpoint to fetch all student data stored in database
 app.get('/data', (req, res) => {
     // Acquire a connection from the pool
     pool.getConnection((err, connection) => {
@@ -49,6 +49,7 @@ app.get('/data', (req, res) => {
     });
 });
 
+// API endpoint to fetch all other data of the student when student name is passed
 app.get('/getOtherColumns', (req, res) => {
     pool.getConnection((err, connection) => {
         if (err) {
@@ -71,6 +72,7 @@ app.get('/getOtherColumns', (req, res) => {
     });
 });
 
+// API endpoint to fetch the password when the ID is given for student
 app.get('/getCredentials', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -94,6 +96,7 @@ app.get('/getCredentials', (req, res) => {
     });
 });
 
+// API endpoint to fetch the password when the username is given for teacher
 app.get('/getTeacherCreds', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -117,6 +120,7 @@ app.get('/getTeacherCreds', (req, res) => {
     });
 });
 
+// API endpoint to fetch the winners for the previous quarter
 app.get('/getWinners', (req, res) => {
     var winResults = [];
     pool.getConnection((err, connection) => {
@@ -147,6 +151,7 @@ app.get('/getWinners', (req, res) => {
     });
 });
 
+// API endpoint to fetch the prizes for the winners from the database
 app.get('/getPrizes', async (req, res) => {
     try {
         const connection = await getConnectionFromPool();
@@ -185,6 +190,7 @@ function executeQuery(connection, query) {
     });
 };
 
+// fetch the random winners generated and stored in database
 app.get('/getRandWins', (req, res) => {
     var randWinnerInfo = [];
     let randWinners;
@@ -216,6 +222,7 @@ app.get('/getRandWins', (req, res) => {
     }
 });
 
+// API endpoint to update the points and log them in another table
 app.post('/updatePoints', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -224,7 +231,7 @@ app.post('/updatePoints', (req, res) => {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        // Query the database to select other columns of the same row
+        // Query the database to update the points
         console.log([req.body.points, req.body.id]);
         const query = "UPDATE nchs.track SET Points = (Points + ?) WHERE (ID = ?)";
         connection.query(query, [req.body.points, req.body.id], (error, results) => {
@@ -236,6 +243,7 @@ app.post('/updatePoints', (req, res) => {
             }
         });
 
+        // Query the database to enter the activities selected
         for (let i = 0; i < req.body.activity.length; i++) {
             connection.query("INSERT INTO nchs.date (studentID, date, activity) VALUES (?,?,?)", [req.body.id, req.body.date, req.body.activity[i]], (error, results) => {
                 connection.release();
@@ -250,6 +258,7 @@ app.post('/updatePoints', (req, res) => {
 
 });
 
+// API endpoint to fetch the ID and points of the students in descending order of points
 app.get('/getRank', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -272,6 +281,7 @@ app.get('/getRank', (req, res) => {
     });
 });
 
+// API endpoint to fetch the activities of the given student ID
 app.get('/getActivity', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -295,6 +305,7 @@ app.get('/getActivity', (req, res) => {
     });
 });
 
+// API endpoint to read the report and send the report data as an array
 app.get('/getReportData', (req, res) => {
     // Get the first worksheet from the workbook
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -311,6 +322,7 @@ app.get('/getReportData', (req, res) => {
 
 });
 
+// insert a new row with new student information given to create a student account
 app.post('/createStudent', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -335,6 +347,7 @@ app.post('/createStudent', (req, res) => {
     
 });
 
+// insert a new row with new teacher information given to create a teacher account
 app.post('/createTeacher', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -358,6 +371,7 @@ app.post('/createTeacher', (req, res) => {
 
 });
 
+// Update the password field of the student table to the new password
 app.post('/changeStudentPassword', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -380,6 +394,7 @@ app.post('/changeStudentPassword', (req, res) => {
 
 });
 
+// Update the password field of the teacher table to the new password
 app.post('/changeTeacherPassword', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -402,6 +417,8 @@ app.post('/changeTeacherPassword', (req, res) => {
 
 });
 
+
+// get email field of the given student ID or username of teacher
 app.get('/getStudentEmail', (req, res) => {
     pool.getConnection((err, connection) => {
 
@@ -443,7 +460,8 @@ app.get('/getTeacherEmail', (req, res) => {
     });
 
 });
-// Start the server
+
+// Start the server on localhost 3000
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

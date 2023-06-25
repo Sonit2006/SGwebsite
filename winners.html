@@ -7,15 +7,17 @@
 
 <body>
     <div id="wrapper">
+        <!-- Website logo and title -->
         <div id="banner">
-            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98" style="float: left;">
+            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98"
+                style="float: left;">
             <h1 align="center">Student Genius</h1>
         </div>
         <div id="main-content">
             <div id="menu">
                 <h1> Winners </h1>
+                <!-- contains the winners for each grade in the left table -->
                 <div class="leftMenu">
-
                     <div id="box1">
                         <h3> Winners per this Quarter</h3>
                         <table id="headings">
@@ -34,6 +36,7 @@
                         </table>
                     </div>
                 </div>
+                <!-- contains the random winners table -->
                 <div class="rightMenu">
 
                     <div id="box2">
@@ -56,6 +59,7 @@
         </div>
         <div id="footer"></div>
     </div>
+    <!-- this script is to embed the chatbot in the webpage -->
     <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
     <script>
         window.botpressWebChat.init({
@@ -67,14 +71,18 @@
         });
     </script>
     <script>
+        // display winners when the window loads
         window.onload = function () {
             displayWinners();
         }
+
         const titles = ["Top point Accumulation", "Grade 9 winner", "Grade 10 winner", "Grade 11 winner", "Grade 12 winner"];
         const rows = [document.getElementById("topPoints"), document.getElementById("grade9"), document.getElementById("grade10"), document.getElementById("grade11"), document.getElementById("grade12")];
         const randWinRows = [document.getElementById("randWin9"), document.getElementById("randWin10"), document.getElementById("randWin11"), document.getElementById("randWin12")];
         var prizes;
         var rand;
+
+        // fetches the prizes and winners for previous Quarter from the database
         function displayWinners() {
             fetch('http://localhost:3000/getPrizes')
                 .then(response => response.json())
@@ -101,6 +109,7 @@
                     }
                 });
 
+            // fetches random winners generated with name and ID
             fetch('http://localhost:3000/getRandWins')
                 .then(response => response.json())
                 .then(data => {
@@ -121,6 +130,7 @@
         }
     </script>
     <script>
+        // redirect to teacher home page when the logo button is clicked.
         function redirect() {
             window.location = "teacherHome.html";
         }

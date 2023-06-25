@@ -7,16 +7,16 @@
 
 <body>
     <div id="wrapper">
+        <!-- website title and logo -->
         <div id="banner">
             <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98"
                 style="float: left;">
             <h1 align="center">Student Genius</h1>
         </div>
 
+        <!-- a form in the boxed div with textboxes and submit button -->
         <div id="main-content" align="center">
-
             <div id="menu">
-
                 <div id="box" align="center">
                     <h1>Create A Student Account</h1>
                     <form id="createUser">
@@ -44,6 +44,7 @@
         <div id="footer"></div>
     </div>
     <script>
+        // sends all the given inputs to the API route to update the database
         function create() {
             const data = {
                 id: document.getElementById("ID").value,
@@ -72,6 +73,9 @@
                 });
 
         }
+
+
+        // trigger the create function when submit button is clicked
         form = document.getElementById("createUser");
         form.addEventListener('submit', function (event) {
             // Prevent the default form submission behavior
@@ -79,6 +83,8 @@
             create();
 
         });
+
+        // redirect to admin home page
         function redirect() {
             window.location = "adminIndex.html";
         }

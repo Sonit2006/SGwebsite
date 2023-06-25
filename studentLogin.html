@@ -7,11 +7,13 @@
 
 <body>
   <div id="wrapper">
+    <!-- Website title and logo -->
     <div id="banner">
       <img src="logo.png">
       <h1 align="center">Student Genius</h1>
     </div>
     <div id="main-content">
+      <!-- boxed div with two text fields for credential input -->
       <div id="box">
         <div id="center2">
           <h2>Login</h2>
@@ -30,6 +32,7 @@
   <script>
     user = document.getElementById("username");
     pwd = document.getElementById("password");
+    // verifies if the password matches the username's password and alerts accordingly
     function verify() {
       fetch('http://localhost:3000/getCredentials?value=' + encodeURIComponent(user.value))
         .then(response => response.json())

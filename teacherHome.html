@@ -7,6 +7,7 @@
 
 <body>
     <div id="wrapper">
+        <!-- website title and logo -->
         <div id="banner">
             <div class="left1"><img src="logo.png">
                 <h1 align="center">Student Genius</h1>
@@ -15,11 +16,14 @@
                 <input type="button" value="Sign Out" onclick="signOut()">
             </div>
         </div>
+
         <div id="main-content">
+            <!-- div containing update button -->
             <div id="updateBtn">
                 <input type="button" align="center" id="update" onclick="navigate()" value="Update">
             </div>
             <div id="menu">
+                <!-- div with two buttons to the left -->
                 <div class="left">
                     <li><input type="button" align="center" id="report" onclick="downloadFile()"
                             value="Generate report">
@@ -28,6 +32,7 @@
                     <li><input type="button" align="center" id="winners" value="Show Winners" onclick="showWinners()">
                     </li>
                 </div>
+                <!-- div with the box to search the student status. -->
                 <div class="right">
                     <div id="box1">
                         <h3>Search for Student Information</h3>
@@ -47,6 +52,7 @@
         </div>
         <div id="footer"></div>
     </div>
+    <!-- this script is to embed the chatbot in the webpage -->
     <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
     <script>
         window.botpressWebChat.init({
@@ -58,11 +64,13 @@
         });
     </script>
     <script>
+        // navigate to update page
         function navigate() {
             window.location = "update.html";
         }
     </script>
     <script>
+        
         const searchInput = document.getElementById('searchInput');
         const dropdown = document.getElementById('dropdown');
 
@@ -77,7 +85,8 @@
                 // Handle any errors
                 console.error(error);
             });
-
+        
+        // filter the dropdown when typing the student name in the search field
         function filterDropdownOptions() {
             const filterValue = searchInput.value.toLowerCase();
             dropdown.innerHTML = '';
@@ -104,12 +113,14 @@
                 dropdown.style.display = 'none';
             }
         }
-
+        
+        // displays the name selected from the dropdown in the textbox
         function selectSuggestion(selectedSuggestion) {
             searchInput.value = selectedSuggestion;
             dropdown.style.display = 'none';
         }
 
+        // displays the result in the div after fetching the information for that student
         function displayResult() {
             const display = document.getElementById("result");
             display.innerHTML = "";
@@ -140,6 +151,7 @@
         }
     </script>
     <script>
+        // generates a download link for downloading the report when the button is clicked
         function downloadFile() {
             // window.open("C:/Users/Sonit Maddineni/Documents/ProjectPy/studentGenuis/Report.xlsx")
             var downloadLink = document.getElementById("downloadLink");
@@ -148,12 +160,13 @@
             downloadLink.click();
         }
 
+        // navigates to winners page
         function showWinners() {
             window.location = "winners.html";
         }
     </script>
     <script>
-
+        // makes the dropdown disappear when we click nywhere on the screen except the text input
         document.addEventListener('click', function (event) {
             const widget = document.getElementById('searchInput');
             const clickedElement = event.target;
@@ -165,11 +178,13 @@
             }
         });
 
+        // redirects to index page
         function signOut() {
             window.location = 'index.html';
         }
     </script>
 
+    <!-- avoids going back in history  -->
     <script type="text/javascript">
         window.history.forward();
         function noBack() {

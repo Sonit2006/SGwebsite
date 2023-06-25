@@ -7,11 +7,13 @@
 
 <body>
     <div id="wrapper">
+        <!-- website title and logo -->
         <div id="banner">
             <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98" style="float: left;">
             <h1 align="center">Student Genius</h1>
         </div>
         
+        <!-- two buttons to navigate to respective forms -->
         <div id="main-content">
             <h1 align="center" style="color: darkblue;">Administration</h1>
             <div id="menu">
@@ -30,13 +32,17 @@
     </div>
     
     <script>
+        //navigating to student form
         function navigateStudent() {
             window.location = "createStudent.html";
         }
+
+        //navigating to teacher form
         function navigateTeacher() {
             window.location = "createTeacher.html";
         }
 
+        //navigating to admin home
         function redirect() {
             window.location = "adminIndex.html";
         }

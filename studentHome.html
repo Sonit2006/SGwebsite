@@ -13,6 +13,7 @@
 
 <body>
     <div id="wrapper">
+        <!-- Website title and logo -->
         <div id="banner">
             <div class="left"><img src="logo.png">
                 <h1 align="center">Student Genius</h1>
@@ -23,11 +24,13 @@
 
         </div>
         <div id="main-content">
-            <!-- <h2>Your Points</h2><br> -->
+            
             <div class="row">
+                <!-- left column with recent activity -->
                 <div class="column1" style="background-color: darkblue;">
                     <h2> Recent Updates </h2><br>
                     <div id="choose">
+                        <!-- dropdown for time frame -->
                         <select id="selectActivity" onchange="filter(recents)">
                             <option>Last 7 days</option>
                             <option>Last 14 days</option>
@@ -40,6 +43,7 @@
 
                 </div>
                 <div class="column2" align="center" style="background-color: #bbb;">
+                    <!-- div containing points odometers and progress graphs and table -->
                     <div>
                         <h2 id="studentName" style="background-color: darkblue; width: 250px; color: gold;"></h2><br>
                         <h2>Your Points</h2>
@@ -64,6 +68,7 @@
 
 
                 </div>
+                <!-- div containing show winners button -->
                 <div class="column3" style="background-color: #bbb;">
                     <input type="button" align="center" id="winners" value="Show Winners" onclick="showWinners()">
                 </div>
@@ -73,8 +78,10 @@
     </div>
     <div id="footer"></div>
     </div>
-    <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+    <!-- this script is to embed the chatbot in the webpage -->
+    <script src="https://cdn.botpress.cloud/webchat/v0/inject.js"></script>
     <script>
         window.botpressWebChat.init({
             "botId": "d7291e60-2ba1-4a68-b738-8c94b2b7056f",
@@ -84,29 +91,35 @@
             "showPoweredBy": true
         });
     </script>
+    <!-- odometer library -->
     <script src="http://github.hubspot.com/odometer/odometer.js"></script>
+
     <script>
+        // gets the username and Name entered while logging in
         const urlParams = new URLSearchParams(window.location.search);
         console.log(urlParams.get("username"));
         document.getElementById("studentName").textContent = urlParams.get("name");
+
+        // fetches points and displays on odometer
         fetch('http://localhost:3000/getOtherColumns?value=' + encodeURIComponent(urlParams.get("name")))
             .then(response => response.json())
             .then(data => {
 
                 var odometer = new Odometer({
-                    el: document.getElementById("myOdometer"), // Replace with your target element selector
+                    el: document.getElementById("myOdometer"),
                     value: 0,
                 });
                 odometer.update(data[0].Points);
             });
 
+        // fetches his rank and displays on odometer
         fetch("http://localhost:3000/getRank")
             .then(response => response.json())
             .then(data => {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].ID == urlParams.get("username")) {
                         var odometer = new Odometer({
-                            el: document.getElementById("rankOdometer"), // Replace with your target element selector
+                            el: document.getElementById("rankOdometer"), 
                             value: 0,
                         });
                         odometer.update(i + 1);
@@ -116,6 +129,7 @@
             })
     </script>
     <script>
+        // gets all activities from the tabe in db
         var recents;
         fetch("http://localhost:3000/getActivity?value=" + encodeURIComponent(urlParams.get("username")))
             .then(response => response.json())
@@ -124,6 +138,7 @@
                 filter(data);
             })
 
+        // filter the data according to the timeframe selected in dropdown
         function filter(data) {
             recents = data;
             document.getElementById("updates").innerHTML = '';
@@ -147,12 +162,14 @@
             }
         }
     </script>
+    <!-- libraries for reading the report and making a chart -->
     <script src="C:\Users\Sonit Maddineni\Documents\GitHub\SGwebsite\xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
     <script>
         const user = urlParams.get("username");
         const name = urlParams.get("name");
         let pointRows = [];
+        // calculating the quarter
         for (let i = 0; i < 3; i++) {
             if ((Number(moment().format("M")) >= [11, 1, 4][i]) && (Number(moment().format("M")) <= [11, 1, 4][i]) + 2) {
                 for (let j = 0; j < i + 2; j++) {
@@ -165,7 +182,7 @@
             }
         }
 
-
+        // gets the report data as an array and writes it in the table
         fetch("http://localhost:3000/getReportData")
             .then(response => response.json())
             .then(data => {
@@ -183,7 +200,8 @@
                 }
                 // console.log(data);
             })
-
+        
+        // displays a bar graph based on student points from each quarter
         function makeChart(list) {
             const ctx = document.getElementById('progressChart').getContext('2d');
             let pointList = [];
@@ -224,6 +242,7 @@
 
         }
     </script>
+    <!-- avoids going back into history once redirected from this page to another -->
     <script type="text/javascript">
         window.history.forward();
         function noBack() {
@@ -232,10 +251,12 @@
     </script>
 
     <script>
+        // redirect 
         function showWinners() {
             window.location = "studentWinners.html?username=" + user + "&name=" + name;
         }
 
+        // redirect to index
         function signOut() {
             window.location = 'index.html';
         }

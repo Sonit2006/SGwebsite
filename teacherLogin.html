@@ -7,11 +7,13 @@
 
 <body>
   <div id="wrapper">
+    <!-- website title and logo -->
     <div id="banner">
       <img src="logo.png">
       <h1 align="center">Student Genius</h1>
     </div>
     <div id="main-content">
+      <!-- boxed div with tow credentials input fields -->
       <div id="box">
         <div id="center2">
           <h2>Login</h2>
@@ -29,6 +31,8 @@
   <script>
     user = document.getElementById("username");
     pwd = document.getElementById("password");
+
+    // verifies if the username's password matches the entered passowrd and alerts accordingly.
     function verify() {
       fetch('http://localhost:3000/getTeacherCreds?value=' + encodeURIComponent(user.value))
         .then(response => response.json())
