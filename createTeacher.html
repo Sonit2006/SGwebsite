@@ -1,20 +1,82 @@
 <html>
+
 <head>
-    <title>Create an Account</title>
+    <title> Student Genius</title>
+    <link rel="stylesheet" href="createStudentStyles.css" type="text/css">
 </head>
+
 <body>
-    <h1>Create an Account</h1>
-    <form id="signupForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" required><br><br>
+    <div id="wrapper">
+        <div id="banner">
+            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98"
+                style="float: left;">
+            <h1 align="center">Student Genius</h1>
+        </div>
 
-        <label for="email">School Email:</label><br>
-        <input type="text" id="name" required><br><br>
+        <div id="main-content" align="center">
 
-        <label for="password">Set a Password:</label>
-        <input type="password" id="password" required><br><br>
+            <div id="menu">
 
-        <button type="submit">Create Account</button>
-    </form>
+                <div id="box" align="center">
+                    <br><br><br>
+                    <h1>Create A Teacher Account</h1><br>
+                    <form id="createUser">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" required><br><br>
+
+                        <label for="email">Email: </label>
+                        <input type="text" id="email" required><br><br>
+
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" required><br><br>
+
+                        <input type="submit" value="Create Account">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script>
+        function create() {
+            const data = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                pwd: document.getElementById("password").value,
+            };
+            fetch('http://localhost:3000/createTeacher', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    setTimeout(() => { window.location = "createSuccess.html" }, 200);
+                    console.log(result);
+                    
+                })
+                .catch((error) => {
+                    console.log("error:", error);
+                    alert("This User Already Exists")
+
+                });
+
+        }
+        form = document.getElementById("createUser");
+        form.addEventListener('submit', function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            create();
+
+
+        });
+        function redirect() {
+            window.location = "adminIndex.html";
+        }
+    </script>
 </body>
+
 </html>

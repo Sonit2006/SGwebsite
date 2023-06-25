@@ -1,26 +1,88 @@
 <html>
+
 <head>
-    <title>Create an Account</title>
+    <title> Student Genius</title>
+    <link rel="stylesheet" href="createStudentStyles.css" type="text/css">
 </head>
+
 <body>
-    <h1>Create an Account</h1>
-    <form id="signupForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" required><br><br>
+    <div id="wrapper">
+        <div id="banner">
+            <input type="image" src="logo.png" id="home" onclick="redirect()" width="200" height="98"
+                style="float: left;">
+            <h1 align="center">Student Genius</h1>
+        </div>
 
-        <label for="name">Grade:</label>
-        <input type="text" id="name" required><br><br>
-        
-        <label for="name">Student ID:</label>
-        <input type="text" id="name" required><br><br>
+        <div id="main-content" align="center">
 
-        <label for="email">School Email:</label><br>
-        <input type="text" id="name" required><br><br>
+            <div id="menu">
 
-        <label for="password">Set a Password:</label>
-        <input type="password" id="password" required><br><br>
+                <div id="box" align="center">
+                    <h1>Create A Student Account</h1>
+                    <form id="createUser">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" required><br><br>
 
-        <button type="submit">Create Account</button>
-    </form>
+                        <label for="name">Grade:</label>
+                        <input type="text" id="grade" required><br><br>
+
+                        <label for="name">ID:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input type="text" id="ID" required><br><br>
+
+                        <label for="email">Email: </label>
+                        <input type="text" id="mail" required><br><br>
+
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" required><br><br>
+
+                        <input type="submit" value="Create Account">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script>
+        function create() {
+            const data = {
+                id: document.getElementById("ID").value,
+                name: document.getElementById("name").value,
+                grade: document.getElementById("grade").value,
+                pwd: document.getElementById("password").value,
+                email: document.getElementById("mail").value
+            };
+            fetch('http://localhost:3000/createStudent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(result => {
+                    // setTimeout(() => { window.location = "createSuccess.html" }, 500);
+                    window.location = "createSuccess.html";
+                    console.log(result);
+
+                })
+                .catch((error) => {
+                    console.log("error:", error);
+                    alert("This User Already Exists")
+                });
+
+        }
+        form = document.getElementById("createUser");
+        form.addEventListener('submit', function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            create();
+
+        });
+        function redirect() {
+            window.location = "adminIndex.html";
+        }
+    </script>
 </body>
+
 </html>

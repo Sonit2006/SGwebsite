@@ -303,7 +303,7 @@ app.get('/getReportData', (req, res) => {
     const cellRange = 'A10:E13';
 
     // Retrieve the values of the cells in the range
-    const rangeValues = XLSX.utils.sheet_to_json(worksheet, {header: 1 });
+    const rangeValues = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
     console.log(rangeValues);
 
@@ -311,6 +311,138 @@ app.get('/getReportData', (req, res) => {
 
 });
 
+app.post('/createStudent', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const query = "INSERT INTO nchs.track (ID, Name, Grade, Points, winners, password, email) VALUES (?,?,?,?,?,?,?)";
+        connection.query(query, [req.body.id, req.body.name, req.body.grade, 0, 0, req.body.pwd, req.body.email], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+            }
+            else {
+                res.json({"ok":"200"});
+              }
+        });
+        
+    });
+    
+});
+
+app.post('/createTeacher', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const query = "INSERT INTO nchs.teacher (user, password, email) VALUES (?,?,?)";
+        connection.query(query, [req.body.name, req.body.pwd, req.body.email], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+            }
+            else {
+                res.json({"ok":"200"});
+              }
+        });
+    });
+
+});
+
+app.post('/changeStudentPassword', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const query = "UPDATE nchs.track SET password = ? WHERE (ID = ?)";
+        connection.query(query, [req.body.pwd, req.body.id], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.json(results)
+        });
+    });
+
+});
+
+app.post('/changeTeacherPassword', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const query = "UPDATE nchs.teacher SET password = ? WHERE (user = ?)";
+        connection.query(query, [req.body.pwd, req.body.user], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+        res.json(results);
+        });
+    });
+
+});
+
+app.get('/getStudentEmail', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const query = "SELECT email FROM nchs.track WHERE (ID = ?)";
+        connection.query(query, [req.query.value], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+        });
+    });
+
+});
+
+app.get('/getTeacherEmail', (req, res) => {
+    pool.getConnection((err, connection) => {
+
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        const query = "SELECT email FROM nchs.teacher WHERE (user = ?)";
+        connection.query(query, [req.query.value], (error, results) => {
+            connection.release();
+            if (error) {
+                console.error('Error executing the query:', error);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+        });
+    });
+
+});
 // Start the server
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
