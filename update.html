@@ -197,15 +197,15 @@
                         el: document.getElementById("myOdometer"), // Replace with your target element selector
                         value: 0,
                     });
-                    odometer.update(data[0].Points);
+                    odometer.update(data[0].Points - countPoints());
                     setTimeout(() => {
                         document.getElementById("confirmUpdate").style.display = "block";
                     }, 0);
                     
-                    setTimeout(() => { odometer.update(data[0].Points + countPoints()) }, 1000);
+                    setTimeout(() => { odometer.update(data[0].Points) }, 1000);
 
                     setTimeout(() => {
-                        document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points).toString() + " to " + (data[0].Points + countPoints()).toString();
+                        document.getElementById("tellUpdate").textContent = "Updated Points for " + document.getElementById("name").textContent + " from " + (data[0].Points - countPoints()).toString() + " to " + (data[0].Points).toString();
 
                     }, 4000);
 
