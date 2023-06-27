@@ -7,7 +7,10 @@ const cors = require('cors');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const XLSX = require('xlsx');
-
+const fs = require('fs');
+const ini = require('ini');
+const configData = fs.readFileSync('C:/Users/Sonit Maddineni/Documents/config.ini', 'utf-8');
+const dbConfig = ini.parse(configData).mysql;
 // Read the Excel file
 const workbook = XLSX.readFile("C://Users/Sonit Maddineni/Documents/ProjectPy/studentGenuis/Report.xlsx");
 
@@ -21,8 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded request
 // Create a MySQL connection pool
 const pool = mysql.createPool({
     host: 'localhost',
-    user: 'root',
-    password: 'Sonit@2006',
+    user: dbConfig.user,
+    password: dbConfig.password,
     database: 'nchs',
 });
 
