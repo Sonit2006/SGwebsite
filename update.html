@@ -230,9 +230,11 @@
     <script>
         // disables the checkboxes that were previously checked for the same ID and date.
         function correct() {
+            const datePicker = document.getElementById("date");
             fetch("http://localhost:3000/getActivity?value=" + encodeURIComponent(document.getElementById("selection").value))
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     // if an activity in the checkboxes is already stored in the database for same ID and date, that checkbox is disabled.
                     for (let i = 0; i < data.length; i++) {
                         if (data[i].date == datePicker.value) {
