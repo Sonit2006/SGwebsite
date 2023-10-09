@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 // Define your API endpoints here
-// ...
+
 
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
